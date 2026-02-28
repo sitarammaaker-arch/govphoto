@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['sharp'],
-    optimizePackageImports: [],
-  },
+  serverExternalPackages: ['sharp'],
+experimental: {
+  optimizePackageImports: [],
+},
 
   compress: true,
 
