@@ -1,0 +1,311 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Custom Properties ─────────────────────────────────────────────────────── */
+:root {
+  --font-body: 'Sora', system-ui, -apple-system, sans-serif;
+  --primary: #0ea5e9;
+  --primary-dark: #0369a1;
+  /* Explicit line-height prevents CLS when font swaps */
+  --lh-body: 1.6;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Prevent horizontal overflow causing CLS */
+    overflow-x: hidden;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  /* Stable line-height on body prevents font-swap CLS */
+  body {
+    line-height: var(--lh-body);
+    /* Stabilise text rendering */
+    text-rendering: optimizeSpeed;
+  }
+}
+
+/* ─── Components ─────────────────────────────────────────────────────────────── */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-sky-500 hover:bg-sky-600
+           text-white font-semibold px-6 py-3 rounded-xl
+           transition-colors duration-200 shadow-md
+           active:scale-95;
+    /* Promote to compositor layer for hover — no layout/paint */
+    will-change: transform;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 bg-white hover:bg-sky-50
+           text-sky-700 font-semibold px-6 py-3 rounded-xl
+           border-2 border-sky-200 hover:border-sky-400
+           transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden;
+  }
+
+  .preset-btn {
+    /* Use transition-colors only — NOT transition-all */
+    @apply flex flex-col items-center gap-1.5 p-3 rounded-xl border-2
+           border-slate-200 hover:border-sky-400 hover:bg-sky-50
+           transition-colors duration-200 cursor-pointer text-center;
+  }
+
+  .preset-btn.active {
+    @apply border-sky-500 bg-sky-50 shadow-sm;
+  }
+
+  .section-title {
+    @apply text-2xl sm:text-3xl font-bold text-slate-900 mb-2;
+  }
+
+  .section-sub {
+    @apply text-slate-500 text-base mb-8;
+  }
+}
+
+/* ─── Utilities ──────────────────────────────────────────────────────────────── */
+@layer utilities {
+  /* content-visibility: auto defers rendering of off-screen sections,
+     cutting Rendering time by up to 60% on long pages */
+  .cv-auto {
+    content-visibility: auto;
+    /* contain-intrinsic-size prevents layout shift when section renders */
+    contain-intrinsic-size: 0 600px;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #0ea5e9, #0369a1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .drop-zone-active {
+    border-color: #0ea5e9;
+    background-color: #f0f9ff;
+    /* Use transform instead of scale to stay on compositor layer */
+    transform: scale(1.01);
+  }
+}
+
+/* ─── Spinner ────────────────────────────────────────────────────────────────── */
+/* will-change ensures browser creates a compositor layer for the element,
+   keeping the spin animation off the main thread entirely */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  will-change: transform;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Status dot (replaces animate-pulse for LCP section) ─────────────────── */
+/* Custom pulse that only animates opacity — much cheaper than scale+opacity */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  will-change: opacity;
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ─── FAQ accordion (CSS-only, no JS) ───────────────────────────────────────── */
+details.faq-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+details.faq-item[open] {
+  border-color: #bae6fd;
+}
+
+details.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: #1e293b;
+  background: #fff;
+  /* transition only background — not transition-all */
+  transition: background-color 0.15s;
+}
+
+details.faq-item summary::-webkit-details-marker { display: none; }
+details.faq-item summary::marker { display: none; }
+
+details.faq-item summary:hover { background: #f0f9ff; }
+
+/* Chevron via CSS — zero extra DOM nodes */
+details.faq-item summary::after {
+  content: '';
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%230ea5e9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 20px;
+  transition: transform 0.2s;
+}
+
+details.faq-item[open] summary::after {
+  transform: rotate(180deg);
+}
+
+details.faq-item .faq-answer {
+  padding: 0 1.25rem 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #475569;
+  background: #f0f9ff;
+  border-top: 1px solid #bae6fd;
+  padding-top: 0.75rem;
+}
+
+/* ─── Reduced motion: respect user OS preference ─────────────────────────────
+   This is a WCAG requirement AND removes animation jank on low-end devices    */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Google AdSense — CLS-safe ad containers
+   ═══════════════════════════════════════════════════════════════════════════
+
+   Core principle: RESERVE space before the ad loads.
+   If no space is reserved, AdSense pushing content down causes CLS.
+   Google's own CWV guidance requires ads to have reserved space.
+
+   All containers use:
+   - Explicit min-height so layout is stable before fill
+   - overflow:hidden so oversized creatives don't break layout
+   - background + border so the user sees a clean placeholder, not a jump
+   - The "Advertisement" label is required by Google's publisher policies
+     and also signals to users what the space is, reducing surprise CLS
+
+   ─────────────────────────────────────────────────────────────────────── */
+
+/* ── Shared wrapper ─────────────────────────────────────────────────────── */
+.ad-unit-wrapper {
+  width: 100%;
+  overflow: hidden;
+  /* Soft placeholder background — visible briefly before fill */
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+/* ── "Advertisement" label ─────────────────────────────────────────────── */
+/* Required by Google AdSense policies. Small, unobtrusive. */
+.ad-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  text-align: center;
+  padding: 4px 0 2px;
+  line-height: 1;
+  user-select: none;
+}
+
+/* ── The actual <ins> AdSense element ─────────────────────────────────── */
+.adsbygoogle {
+  display: block !important;
+}
+
+/* ── Placement 1: Between hero and tool (top banner) ───────────────────
+   Horizontal leaderboard. Reserved 90px desk / 60px mobile.
+   Max-width 728px on desktop (standard leaderboard), full-width mobile. */
+.ad-between-sections {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 8px 16px;
+}
+
+.ad-between-sections .adsbygoogle {
+  min-height: 90px;  /* desktop leaderboard */
+}
+
+@media (max-width: 767px) {
+  .ad-between-sections .adsbygoogle {
+    min-height: 60px; /* mobile banner */
+  }
+}
+
+/* ── Placement 2: Post-result (inside tool card) ────────────────────────
+   Medium rectangle. Shown only after resize complete.
+   Narrow enough to feel native to the card layout.
+   Reserve 280px so card doesn't jump when ad fills. */
+.ad-post-result {
+  margin-top: 20px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 16px;
+}
+
+.ad-post-result .adsbygoogle {
+  min-height: 250px; /* medium rectangle */
+  max-width: 336px;
+  margin: 0 auto;
+}
+
+@media (max-width: 400px) {
+  .ad-post-result .adsbygoogle {
+    min-height: 200px;
+    max-width: 100%;
+  }
+}
+
+/* ── Placement 4: Above footer ──────────────────────────────────────────
+   Rectangle on all screen sizes. Centered with comfortable breathing room.
+   Reserve 280px — full medium rectangle height. */
+.ad-above-footer {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 24px 16px 8px;
+}
+
+.ad-above-footer .adsbygoogle {
+  min-height: 250px;
+}
+
+@media (max-width: 767px) {
+  .ad-above-footer {
+    max-width: 100%;
+    padding: 20px 16px 4px;
+  }
+  .ad-above-footer .adsbygoogle {
+    min-height: 200px;
+  }
+}
