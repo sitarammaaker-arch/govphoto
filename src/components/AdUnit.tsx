@@ -11,6 +11,11 @@ interface AdUnitProps {
   label?: boolean;
 }
 
+// Extend window type to include adsbygoogle
+interface AdsWindow extends Window {
+  adsbygoogle: object[];
+}
+
 export default function AdUnit({
   slot,
   format = 'auto',
@@ -19,7 +24,6 @@ export default function AdUnit({
 }: AdUnitProps) {
   const insRef      = useRef<HTMLModElement>(null);
   const initialised = useRef(false);
-
   const publisherId = process.env.NEXT_PUBLIC_ADSENSE_ID;
 
   useEffect(() => {
@@ -31,13 +35,9 @@ export default function AdUnit({
           if (entry.isIntersecting && !initialised.current) {
             initialised.current = true;
             try {
-              const adsByGoogle = (
-                (window as unknown as Record<string, unknown>)['adsbygoogle'] as { push: (o: object) => void }[] | undefined
-              ) ?? [];
-              (
-                (window as unknown as Record<string, unknown>)['adsbygoogle'] as { push: (o: object) => void }[]
-              ) = adsByGoogle;
-              adsByGoogle.push({});
+              const w = window as unknown as AdsWindow;
+              w.adsbygoogle = w.adsbygoogle || [];
+              w.adsbygoogle.push({});
             } catch {
               if (insRef.current?.parentElement) {
                 (insRef.current.parentElement as HTMLElement).style.display = 'none';
@@ -57,14 +57,9 @@ export default function AdUnit({
   if (!publisherId) return null;
 
   return (
-    <div
-      className={`ad-unit-wrapper ${className}`}
-      aria-label="Advertisement"
-    >
+    <div className={`ad-unit-wrapper ${className}`} aria-label="Advertisement">
       {label && (
-        <p className="ad-label" aria-hidden="true">
-          Advertisement
-        </p>
+        <p className="ad-label" aria-hidden="true">Advertisement</p>
       )}
       <ins
         ref={insRef}
@@ -80,3 +75,14 @@ export default function AdUnit({
     </div>
   );
 }
+```
+
+5. Scroll down, click **"Commit changes"** → **"Commit changes"** again
+
+---
+
+## Step 3 — Verify the Commit Hash Changed
+
+After committing both files, go to:
+```
+https://github.com/sitarammaaker-arch/govphoto/commits/main
