@@ -1,14 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   serverExternalPackages: ['sharp'],
-
   compress: true,
-
   images: {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 86400,
   },
-
   async headers() {
     return [
       {
