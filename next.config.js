@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   serverExternalPackages: ['sharp'],
-experimental: {
-  optimizePackageImports: [],
-},
 
   compress: true,
 
@@ -12,8 +9,6 @@ experimental: {
     minimumCacheTTL: 86400,
   },
 
-  // Allow AdSense to load its own scripts and frames
-  // Without this, strict CSP setups block AdSense fill
   async headers() {
     return [
       {
@@ -21,9 +16,6 @@ experimental: {
         headers: [
           { key: 'X-DNS-Prefetch-Control', value: 'on' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
-          // Note: X-Frame-Options DENY is removed because AdSense renders
-          // ad creatives inside iframes. DENY would block that.
-          // If you need framing protection, use frame-ancestors CSP directive instead.
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
         ],
       },
