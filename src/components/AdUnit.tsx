@@ -75,14 +75,3 @@ export default function AdUnit({
     </div>
   );
 }
-```
-
-5. Scroll down, click **"Commit changes"** → **"Commit changes"** again
-
----
-
-## Step 3 — Verify the Commit Hash Changed
-
-After committing both files, go to:
-```
-https://github.com/sitarammaaker-arch/govphoto/commits/main
