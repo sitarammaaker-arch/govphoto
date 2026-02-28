@@ -275,7 +275,7 @@ export async function POST(request: NextRequest) {
     // This saves ~33% payload size (base64 encoding adds 33% overhead).
     // Acceptability metadata travels in a custom response header.
     // Client uses URL.createObjectURL(blob) — no base64 decode needed.
-    return new Response(outputBuffer, {
+    return new Response(new Uint8Array(outputBuffer), {
       status: 200,
       headers: {
         'Content-Type':       'image/jpeg',
