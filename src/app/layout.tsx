@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Resize Photo & Signature for Government Job Forms',
     description: 'Free tool to resize photo and signature for SSC, UPSC, Railway, and all Indian government exams.',
-    type: 'website', locale: 'en_IN', siteName: 'GovPhoto Resizer',
+    type: 'website', locale: 'en_IN', siteName: 'SignResizer',
   },
   twitter: {
     card: 'summary_large_image',
