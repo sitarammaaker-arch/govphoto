@@ -15,7 +15,7 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://govphoto.in'),
+  metadataBase: new URL('https://signresizer.com'),
   title: {
     default: 'Resize Photo to 20KB & Signature to 15KB for Government Job Forms',
     template: '%s | GovPhoto Resizer',
@@ -93,7 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* ── Metadata ────────────────────────────────────────────────────── */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="canonical" href="https://govphoto.in" />
+        <link rel="canonical" href="https://signresizer.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
