@@ -18,8 +18,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://signresizer.com'),
   title: {
     default: ''Resize Photo & Signature for Govt Job Forms | SignResizer',
-    template: '%s | SignResizer',
-    siteName: 'SignResizer',
+    template: '%s | SignResizer',   
   },
   description:
     'Free online tool to resize photo and signature for SSC, Railway, CET, UPSC and other government exams. Make photo 20KB, 50KB instantly. No registration needed.',
