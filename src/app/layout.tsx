@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://signresizer.com'),
   title: {
     default: 'Resize Photo to 20KB & Signature to 15KB for Government Job Forms',
-    template: '%s | GovPhoto Resizer',
+    template: '%s | Sign Resizer',
   },
   description:
     'Free online tool to resize photo and signature for SSC, Railway, CET, UPSC and other government exams. Make photo 20KB, 50KB instantly. No registration needed.',
@@ -47,9 +47,9 @@ const faqSchema = {
   mainEntity: [
     { '@type': 'Question', name: 'What is the photo size for SSC exam forms?', acceptedAnswer: { '@type': 'Answer', text: 'For SSC exam forms, the photo should be between 20KB to 50KB in JPEG format, 3.5cm x 4.5cm with a white background.' } },
     { '@type': 'Question', name: 'What is the signature size for government job forms?', acceptedAnswer: { '@type': 'Answer', text: 'For SSC, Railway, and Banking exams the signature file should be 10KB to 20KB in JPEG format on a white background.' } },
-    { '@type': 'Question', name: 'How to reduce photo size to 20KB online?', acceptedAnswer: { '@type': 'Answer', text: 'Upload your photo on GovPhoto Resizer, select the SSC Photo preset (20-50KB), and click Resize. The tool automatically compresses your photo to the required size.' } },
+    { '@type': 'Question', name: 'How to reduce photo size to 20KB online?', acceptedAnswer: { '@type': 'Answer', text: 'Upload your photo on Sign Resizer, select the SSC Photo preset (20-50KB), and click Resize. The tool automatically compresses your photo to the required size.' } },
     { '@type': 'Question', name: 'What photo format is required for UPSC application?', acceptedAnswer: { '@type': 'Answer', text: 'UPSC requires JPEG/JPG format, 20KB to 300KB, dimensions 200x230 pixels with a plain white background.' } },
-    { '@type': 'Question', name: 'Is this tool free to use?', acceptedAnswer: { '@type': 'Answer', text: 'Yes, GovPhoto Resizer is completely free. No registration required. Images are never stored on our servers.' } },
+    { '@type': 'Question', name: 'Is this tool free to use?', acceptedAnswer: { '@type': 'Answer', text: 'Yes, Sign Resizer is completely free. No registration required. Images are never stored on our servers.' } },
     { '@type': 'Question', name: 'What is passport size photo dimensions in pixels?', acceptedAnswer: { '@type': 'Answer', text: 'Passport size is 3.5cm x 4.5cm — approximately 413x531 pixels at 300 DPI or 200x230 pixels at standard resolution.' } },
   ],
 };
