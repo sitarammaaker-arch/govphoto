@@ -3,8 +3,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Disclaimer | GovPhoto Resizer',
-  description: 'Disclaimer for GovPhoto Resizer — important information about usage.',
+  title: 'Disclaimer | Sign Resizer',
+  description: 'Disclaimer for Sign Resizer — important information about usage.',
 };
 
 export default function Disclaimer() {
@@ -18,7 +18,7 @@ export default function Disclaimer() {
         <div className="space-y-6 text-slate-600">
           <section>
             <h2 className="text-xl font-bold text-slate-800 mb-3">No Official Affiliation</h2>
-            <p>GovPhoto Resizer is an independent utility tool. We are <strong>not affiliated with, endorsed by, or connected to</strong> any government organization including SSC, UPSC, Railway Recruitment Board, IBPS, SBI, NTA, or any other exam conducting authority in India.</p>
+            <p>Sign Resizer is an independent utility tool. We are <strong>not affiliated with, endorsed by, or connected to</strong> any government organization including SSC, UPSC, Railway Recruitment Board, IBPS, SBI, NTA, or any other exam conducting authority in India.</p>
           </section>
 
           <section>
@@ -28,12 +28,12 @@ export default function Disclaimer() {
 
           <section>
             <h2 className="text-xl font-bold text-slate-800 mb-3">Limitation of Liability</h2>
-            <p>GovPhoto Resizer shall not be held liable for any rejection of applications due to incorrect photo or signature specifications. It is the user's responsibility to verify the requirements from official sources.</p>
+            <p>Sign Resizer shall not be held liable for any rejection of applications due to incorrect photo or signature specifications. It is the user's responsibility to verify the requirements from official sources.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold text-slate-800 mb-3">Contact</h2>
-            <p>Questions? Email us at: <a href="mailto:contact@govphoto.in" className="text-sky-600 hover:underline">contact@govphoto.in</a></p>
+            <p>Questions? Email us at: <a href="mailto:contact@signresizer.com" className="text-sky-600 hover:underline">contact@signresizer.com</a></p>
           </section>
         </div>
       </main>
