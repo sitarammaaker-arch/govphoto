@@ -16,7 +16,7 @@ export default function Header() {
             </svg>
           </div>
           <div>
-            <span className="font-bold text-sky-700 text-lg leading-none block">GovPhoto</span>
+            <span className="font-bold text-sky-700 text-lg leading-none block">Sign</span>
             <span className="text-xs text-slate-400 leading-none">Resizer</span>
           </div>
         </Link>
