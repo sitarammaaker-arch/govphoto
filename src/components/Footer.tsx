@@ -46,7 +46,7 @@ export default function Footer() {
               <li><a href="/privacy-policy" className="hover:text-sky-400 transition-colors">Privacy Policy</a></li>
               <li><a href="/disclaimer" className="hover:text-sky-400 transition-colors">Disclaimer</a></li>
               <li><a href="/terms" className="hover:text-sky-400 transition-colors">Terms of Use</a></li>
-              <li><a href="mailto:contact@govphoto.in" className="hover:text-sky-400 transition-colors">Contact Us</a></li>
+              <li><a href="mailto:contact@signresizer.com" className="hover:text-sky-400 transition-colors">Contact Us</a></li>
             </ul>
           </div>
         </div>
@@ -54,13 +54,13 @@ export default function Footer() {
         {/* Disclaimer */}
         <div className="border-t border-slate-800 pt-6 mb-6">
           <p className="text-xs text-slate-500 leading-relaxed">
-            <strong className="text-slate-400">Disclaimer:</strong> GovPhoto Resizer is an independent utility tool and is not affiliated with, endorsed by, or connected to any government organization, SSC, UPSC, Railway Board, or any exam conducting authority. Photo and signature size requirements may change with each notification. Always verify the exact requirements from the official exam notification before submission.
+            <strong className="text-slate-400">Disclaimer:</strong> Sign Resizer is an independent utility tool and is not affiliated with, endorsed by, or connected to any government organization, SSC, UPSC, Railway Board, or any exam conducting authority. Photo and signature size requirements may change with each notification. Always verify the exact requirements from the official exam notification before submission.
           </p>
         </div>
 
         {/* Copyright */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {currentYear} GovPhoto Resizer. All rights reserved.</p>
+          <p>© {currentYear} Sign Resizer. All rights reserved.</p>
           <p>Built with ❤️ for Indian government job aspirants</p>
         </div>
       </div>
