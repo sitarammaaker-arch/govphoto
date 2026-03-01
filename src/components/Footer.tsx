@@ -14,7 +14,7 @@ export default function Footer() {
                 </svg>
               </div>
               <div>
-                <span className="font-bold text-white text-lg leading-none block">GovPhoto Resizer</span>
+                <span className="font-bold text-white text-lg leading-none block">Sign Resizer</span>
                 <span className="text-xs text-slate-400">Government Job Form Tool</span>
               </div>
             </div>
