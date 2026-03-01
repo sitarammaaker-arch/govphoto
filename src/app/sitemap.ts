@@ -3,25 +3,25 @@ import { MetadataRoute } from 'next';
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://govphoto.in',
+      url: 'https://signresizer.com',
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
-      url: 'https://govphoto.in/privacy-policy',
+      url: 'https://signresizer.com/privacy-policy',
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
-      url: 'https://govphoto.in/disclaimer',
+      url: 'https://signresizer.com/disclaimer',
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
-      url: 'https://govphoto.in/terms',
+      url: 'https://signresizer.com/terms',
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.3,
