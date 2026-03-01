@@ -39,6 +39,9 @@ export const metadata: Metadata = {
     description: 'Free online tool for SSC, UPSC, Railway photo & signature resize.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  verification: {
+  google: 'google-site-verification=1ysCJdzjSbR_IX1I2t6CUGQgJH2fU-AhH5H778rKo_A',
+},
 };
 
 const faqSchema = {
