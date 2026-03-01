@@ -1,4 +1,4 @@
-# GovPhoto Resizer — Government Job Form Photo & Signature Tool
+# Sign Resizer — Government Job Form Photo & Signature Tool
 
 A production-ready Next.js web application for resizing photo and signature images for Indian government job exam forms (SSC, UPSC, Railway, Banking, CET, Police, etc.).
 
