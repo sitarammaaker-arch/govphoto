@@ -58,55 +58,33 @@ const faqSchema = {
   ],
 };
 
-// Read environment variables
-const GA_ID      = process.env.NEXT_PUBLIC_GA_ID;
-const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID;
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={sora.variable}>
       <head>
 
-        {/* ── Google Analytics ──────────────────────────────────────────── */}
-        {GA_ID && (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${GA_ID}', { page_path: window.location.pathname });
-                `,
-              }}
-            />
-          </>
-        )}
+        {/* ── Google Analytics G-KC96GXG9E2 ── */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-KC96GXG9E2"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-KC96GXG9E2', { page_path: window.location.pathname });
+            `,
+          }}
+        />
 
-        {/* ── Preconnects ───────────────────────────────────────────────── */}
+        {/* ── Preconnects ── */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
-        {/* ── AdSense ───────────────────────────────────────────────────── */}
-        {ADSENSE_ID && (
-          <>
-            <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
-            <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
-            <script
-              async
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`}
-              crossOrigin="anonymous"
-            />
-          </>
-        )}
-
-        {/* ── Other head tags ───────────────────────────────────────────── */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="canonical" href="https://www.signresizer.com" />
         <script
