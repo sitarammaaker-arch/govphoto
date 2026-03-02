@@ -69,7 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <>
       <script
         async
-        src=src="https://www.googletagmanager.com/gtag/js?id=G-KC96GXG9E2"
+        src={`https://www.googletagmanager.com/gtag/js?id=G-KC96GXG9E2`}
       />
       <script
         dangerouslySetInnerHTML={{
