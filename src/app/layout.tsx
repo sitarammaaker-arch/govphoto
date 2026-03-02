@@ -78,7 +78,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
+{/* ── Google AdSense Verification ── */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5608033229796578"
+          crossOrigin="anonymous"
+        />
 
+        {/* ── Preconnects ── */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         {/* ── Preconnects ── */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
