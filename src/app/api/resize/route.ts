@@ -218,6 +218,8 @@ export async function POST(request: NextRequest) {
       custom: {
         targetMinKB: parseInt(customMinKB || '20'),
         targetMaxKB: parseInt(customMaxKB || '50'),
+        width:  customWidthVal  > 0 ? customWidthVal  : undefined,
+        height: customHeightVal > 0 ? customHeightVal : undefined,
         whiteBg: enableWhiteBg,
         trimSignature: enableTrim,
         dpi: dpi300 ? 300 : 96,
