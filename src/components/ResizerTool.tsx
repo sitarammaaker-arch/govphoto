@@ -4,14 +4,9 @@ import { useState, useRef, useCallback } from 'react';
 import AdUnit from './AdUnit';
 
 type Preset = {
-  id: string;
-  label: string;
-  description: string;
-  minKB: number;
-  maxKB: number;
-  icon: string;
-  width?: number;
-  height?: number;
+  id: string; label: string; description: string;
+  minKB: number; maxKB: number; icon: string;
+  width?: number; height?: number;
 };
 
 const PRESETS: Preset[] = [
@@ -34,13 +29,16 @@ interface ResizerToolProps {
   postResultAdSlot?: string;
 }
 
+const FORMAT_OPTIONS = ['jpg', 'png', 'webp', 'pdf'] as const;
+type OutputFormat = typeof FORMAT_OPTIONS[number];
+
 export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {}) {
   const [selectedPreset, setSelectedPreset] = useState<string>('ssc_photo');
   const [customMinKB, setCustomMinKB]       = useState<string>('20');
   const [customMaxKB, setCustomMaxKB]       = useState<string>('50');
   const [customWidth, setCustomWidth]       = useState<string>('');
-const [customHeight, setCustomHeight]     = useState<string>('');
-const [outputFormat, setOutputFormat]     = useState<string>('jpg');
+  const [customHeight, setCustomHeight]     = useState<string>('');
+  const [outputFormat, setOutputFormat]     = useState<OutputFormat>('jpg');
   const [enableWhiteBg, setEnableWhiteBg]   = useState<boolean>(false);
   const [enableTrim, setEnableTrim]         = useState<boolean>(false);
   const [dpi300, setDpi300]                 = useState<boolean>(false);
@@ -93,14 +91,17 @@ const [outputFormat, setOutputFormat]     = useState<string>('jpg');
       fd.append('customMinKB', customMinKB);
       fd.append('customMaxKB', customMaxKB);
       fd.append('customWidth', customWidth);
-fd.append('customHeight', customHeight);
-fd.append('outputFormat', outputFormat);
+      fd.append('customHeight', customHeight);
+      fd.append('outputFormat', outputFormat);
       fd.append('whiteBg', enableWhiteBg.toString());
       fd.append('trimSignature', enableTrim.toString());
       fd.append('dpi300', dpi300.toString());
 
       const res = await fetch('/api/resize', { method: 'POST', body: fd });
-      if (!res.ok) { const err = await res.json().catch(() => ({ error: 'Processing failed' })); throw new Error(err.error || 'Processing failed'); }
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'Processing failed' }));
+        throw new Error(err.error || 'Processing failed');
+      }
 
       const acceptHeader = res.headers.get('X-Acceptability');
       const acc: AcceptabilityResult = acceptHeader ? JSON.parse(acceptHeader) : null;
@@ -115,18 +116,18 @@ fd.append('outputFormat', outputFormat);
     } finally {
       setIsProcessing(false);
     }
-  }, [originalFile, selectedPreset, customMinKB, customMaxKB, customWidth, customHeight, enableWhiteBg, enableTrim, dpi300]);
+  }, [originalFile, selectedPreset, customMinKB, customMaxKB, customWidth, customHeight, outputFormat, enableWhiteBg, enableTrim, dpi300]);
 
   const handleDownload = useCallback(() => {
     if (!resultImage) return;
-    if (typeof window !== 'undefined' && (window as unknown as { gtag?: Function }).gtag) {
-      (window as unknown as { gtag: Function }).gtag('event', 'download', { event_category: 'image', event_label: selectedPreset });
+    const w = window as unknown as Record<string, unknown>;
+    if (typeof w['gtag'] === 'function') {
+      (w['gtag'] as (...a: unknown[]) => void)('event', 'download', { event_category: 'image', event_label: selectedPreset });
     }
-    const preset = PRESETS.find((p) => p.id === selectedPreset);
+    const preset   = PRESETS.find((p) => p.id === selectedPreset);
     const baseName = `signresizer_${preset?.id ?? 'resized'}_${Date.now()}`;
 
     if (outputFormat === 'pdf') {
-      // Build a minimal single-image PDF client-side — no extra library needed
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
@@ -136,13 +137,11 @@ fd.append('outputFormat', outputFormat);
         if (!ctx) return;
         ctx.drawImage(img, 0, 0);
         const jpegData = canvas.toDataURL('image/jpeg', 0.95).split(',')[1];
-        const pdfContent = buildSimplePdf(jpegData, img.naturalWidth, img.naturalHeight);
-        const blob = new Blob([pdfContent], { type: 'application/pdf' });
+        const pdfBytes = buildSimplePdf(jpegData, img.naturalWidth, img.naturalHeight);
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
         const url  = URL.createObjectURL(blob);
         const a    = document.createElement('a');
-        a.href     = url;
-        a.download = `${baseName}.pdf`;
-        a.click();
+        a.href = url; a.download = `${baseName}.pdf`; a.click();
         URL.revokeObjectURL(url);
       };
       img.src = resultImage;
@@ -150,10 +149,9 @@ fd.append('outputFormat', outputFormat);
     }
 
     const extMap: Record<string, string> = { jpg: 'jpg', jpeg: 'jpg', png: 'png', webp: 'webp' };
-    const ext = extMap[outputFormat] || 'jpg';
     const a = document.createElement('a');
-    a.href     = resultImage;
-    a.download = `${baseName}.${ext}`;
+    a.href = resultImage;
+    a.download = `${baseName}.${extMap[outputFormat] ?? 'jpg'}`;
     a.click();
   }, [resultImage, selectedPreset, outputFormat]);
 
@@ -197,54 +195,41 @@ fd.append('outputFormat', outputFormat);
         {selectedPreset === 'custom' && (
           <div className="mt-4 p-4 bg-sky-50 rounded-xl border border-sky-100 space-y-3">
             <p className="text-sm font-semibold text-sky-800">Custom Size Settings</p>
-
-            {/* KB Row */}
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label htmlFor="min-kb" className="text-xs font-medium text-slate-600 block mb-1">Min Size (KB)</label>
-                <input id="min-kb" type="number" value={customMinKB}
-                  onChange={(e) => setCustomMinKB(e.target.value)} min="5" max="5000"
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                <input id="min-kb" type="number" value={customMinKB} onChange={(e) => setCustomMinKB(e.target.value)}
+                  min="5" max="5000" className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
               </div>
               <div>
                 <label htmlFor="max-kb" className="text-xs font-medium text-slate-600 block mb-1">Max Size (KB)</label>
-                <input id="max-kb" type="number" value={customMaxKB}
-                  onChange={(e) => setCustomMaxKB(e.target.value)} min="5" max="5000"
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                <input id="max-kb" type="number" value={customMaxKB} onChange={(e) => setCustomMaxKB(e.target.value)}
+                  min="5" max="5000" className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
               </div>
             </div>
-
-            {/* Width & Height Row */}
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label htmlFor="custom-width" className="text-xs font-medium text-slate-600 block mb-1">Width (px)</label>
-                <input id="custom-width" type="number" value={customWidth}
-                  onChange={(e) => setCustomWidth(e.target.value)} min="1" max="5000"
-                  placeholder="Optional"
+                <input id="custom-width" type="number" value={customWidth} onChange={(e) => setCustomWidth(e.target.value)}
+                  min="1" max="5000" placeholder="Optional"
                   className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 placeholder-slate-300" />
               </div>
               <div>
                 <label htmlFor="custom-height" className="text-xs font-medium text-slate-600 block mb-1">Height (px)</label>
-                <input id="custom-height" type="number" value={customHeight}
-                  onChange={(e) => setCustomHeight(e.target.value)} min="1" max="5000"
-                  placeholder="Optional"
+                <input id="custom-height" type="number" value={customHeight} onChange={(e) => setCustomHeight(e.target.value)}
+                  min="1" max="5000" placeholder="Optional"
                   className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 placeholder-slate-300" />
               </div>
             </div>
-            <p className="text-xs text-slate-400">
-              Add width and height for exact dimensions, or keep blank to preserve original ratio.
-            </p>
+            <p className="text-xs text-slate-400">Add width and height for exact dimensions, or keep blank to preserve original ratio.</p>
           </div>
         )}
 
-        {/* Advanced Options */}
-        <div className="mt-4 pt-4 border-t border-slate-100">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Advanced Options</p>
-          {/* Download Format */}
+        {/* Download Format */}
         <div className="mt-4 pt-4 border-t border-slate-100">
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Download Format</p>
           <div className="flex flex-wrap gap-2">
-            {['jpg', 'png', 'webp', 'pdf'].map((fmt) => (
+            {FORMAT_OPTIONS.map((fmt) => (
               <button
                 key={fmt}
                 onClick={() => setOutputFormat(fmt)}
@@ -269,8 +254,7 @@ fd.append('outputFormat', outputFormat);
               { id: 'dpi300',  checked: dpi300,        set: setDpi300,        label: 'Set DPI to 300' },
             ].map(({ id, checked, set, label }) => (
               <label key={id} className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" id={id} checked={checked}
-                  onChange={(e) => set(e.target.checked)}
+                <input type="checkbox" id={id} checked={checked} onChange={(e) => set(e.target.checked)}
                   className="w-4 h-4 rounded text-sky-500 border-slate-300 focus:ring-sky-400" />
                 <span className="text-sm text-slate-700">{label}</span>
               </label>
@@ -291,7 +275,9 @@ fd.append('outputFormat', outputFormat);
           onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}
           onClick={() => !originalFile && fileInputRef.current?.click()}
           className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-colors duration-200
-            ${isDragging ? 'border-sky-400 bg-sky-50' : originalFile ? 'border-green-300 bg-green-50 cursor-default' : 'border-slate-300 hover:border-sky-400 hover:bg-sky-50 cursor-pointer'}`}
+            ${isDragging ? 'border-sky-400 bg-sky-50' : originalFile
+              ? 'border-green-300 bg-green-50 cursor-default'
+              : 'border-slate-300 hover:border-sky-400 hover:bg-sky-50 cursor-pointer'}`}
         >
           <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png"
             onChange={handleFileInput} className="hidden" />
@@ -311,7 +297,8 @@ fd.append('outputFormat', outputFormat);
                   </p>
                 </div>
               </div>
-              <button onClick={(e) => { e.stopPropagation(); handleReset(); }} className="text-xs text-red-500 hover:text-red-700 underline">
+              <button onClick={(e) => { e.stopPropagation(); handleReset(); }}
+                className="text-xs text-red-500 hover:text-red-700 underline">
                 Remove &amp; upload different image
               </button>
             </div>
@@ -342,7 +329,9 @@ fd.append('outputFormat', outputFormat);
         <button
           onClick={handleResize} disabled={!originalFile || isProcessing}
           className={`mt-4 w-full flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-base transition-colors duration-200
-            ${!originalFile || isProcessing ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-sky-500 hover:bg-sky-600 text-white shadow-md active:scale-[0.98]'}`}
+            ${!originalFile || isProcessing
+              ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+              : 'bg-sky-500 hover:bg-sky-600 text-white shadow-md active:scale-[0.98]'}`}
         >
           {isProcessing ? (
             <><div className="spinner" />Processing Image...</>
@@ -351,7 +340,9 @@ fd.append('outputFormat', outputFormat);
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              Resize to {activePreset?.id === 'custom' ? `${customMinKB}–${customMaxKB} KB${customWidth && customHeight ? ` • ${customWidth}×${customHeight}px` : ''}` : `${activePreset?.minKB}–${activePreset?.maxKB} KB`}
+              Resize to {activePreset?.id === 'custom'
+                ? `${customMinKB}–${customMaxKB} KB${customWidth && customHeight ? ` • ${customWidth}×${customHeight}px` : ''}`
+                : `${activePreset?.minKB}–${activePreset?.maxKB} KB`} as {outputFormat.toUpperCase()}
             </>
           )}
         </button>
@@ -389,7 +380,7 @@ fd.append('outputFormat', outputFormat);
                 <div className="flex gap-2 flex-wrap text-xs">
                   <Pill green>{acceptability.width}×{acceptability.height}</Pill>
                   <Pill green>{acceptability.finalSizeKB} KB</Pill>
-                  <Pill green>JPG</Pill>
+                  <Pill green>{outputFormat.toUpperCase()}</Pill>
                 </div>
               </div>
             ) : isProcessing ? (
@@ -410,7 +401,7 @@ fd.append('outputFormat', outputFormat);
               <p className="text-sm font-bold text-slate-700 mb-3">Acceptability Check</p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <CheckItem ok={acceptability.sizeOK}    label="File Size"   detail={`${acceptability.finalSizeKB} KB (${acceptability.targetMinKB}–${acceptability.targetMaxKB} KB)`} />
-                <CheckItem ok={acceptability.formatOK}  label="Format"      detail="JPEG/JPG" />
+                <CheckItem ok={acceptability.formatOK}  label="Format"      detail={outputFormat.toUpperCase()} />
                 <CheckItem ok={acceptability.dimsOK}    label="Dimensions"  detail={`${acceptability.width}×${acceptability.height}px`} />
                 <CheckItem ok={acceptability.whiteBgOK} label="White BG"    detail={acceptability.whiteBgOK ? 'Detected' : 'Not detected'} warning={!acceptability.whiteBgOK} />
               </div>
@@ -423,7 +414,7 @@ fd.append('outputFormat', outputFormat);
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              Download Resized Image
+              Download as {outputFormat.toUpperCase()}
             </button>
           )}
 
@@ -436,56 +427,20 @@ fd.append('outputFormat', outputFormat);
   );
 }
 
+// ── Sub-components ──────────────────────────────────────────────────────────────
+
 function Pill({ children, green }: { children: React.ReactNode; green?: boolean }) {
   return (
-    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full
+    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs
       ${green ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-slate-100 text-slate-600'}`}>
       {children}
     </span>
   );
 }
 
-function CheckItem({ ok, label, detail, warning = false }: { ok: boolean; label: string; detail: string; warning?: boolean }) {
-  // Builds a minimal valid PDF containing one JPEG image — no libraries needed
-function buildSimplePdf(jpegBase64: string, imgW: number, imgH: number): Uint8Array {
-  const ptW = Math.round(imgW * 0.75); // px → pt (72pt/96px)
-  const ptH = Math.round(imgH * 0.75);
-  const imgBytes = Uint8Array.from(atob(jpegBase64), c => c.charCodeAt(0));
-
-  const enc  = new TextEncoder();
-  const parts: Uint8Array[] = [];
-  const offsets: number[]   = [];
-  let pos = 0;
-
-  const push = (s: string) => { const b = enc.encode(s); parts.push(b); pos += b.length; };
-  const pushBytes = (b: Uint8Array) => { parts.push(b); pos += b.length; };
-
-  push('%PDF-1.4\n');
-  offsets[1] = pos;
-  push(`1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n`);
-  offsets[2] = pos;
-  push(`2 0 obj\n<< /Type /Pages /Kids [4 0 R] /Count 1 >>\nendobj\n`);
-  offsets[3] = pos;
-  push(`3 0 obj\n<< /Type /XObject /Subtype /Image /Width ${imgW} /Height ${imgH} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${imgBytes.length} >>\nstream\n`);
-  pushBytes(imgBytes);
-  push(`\nendstream\nendobj\n`);
-  offsets[4] = pos;
-  push(`4 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${ptW} ${ptH}] /Contents 5 0 R /Resources << /XObject << /Im1 3 0 R >> >> >>\nendobj\n`);
-  offsets[5] = pos;
-  const stream = `q ${ptW} 0 0 ${ptH} 0 0 cm /Im1 Do Q`;
-  push(`5 0 obj\n<< /Length ${stream.length} >>\nstream\n${stream}\nendstream\nendobj\n`);
-
-  const xrefPos = pos;
-  push(`xref\n0 6\n0000000000 65535 f \n`);
-  for (let i = 1; i <= 5; i++) push(`${String(offsets[i]).padStart(10,'0')} 00000 n \n`);
-  push(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefPos}\n%%EOF`);
-
-  const total = parts.reduce((s, p) => s + p.length, 0);
-  const out   = new Uint8Array(total);
-  let offset  = 0;
-  for (const p of parts) { out.set(p, offset); offset += p.length; }
-  return out;
-}
+function CheckItem({ ok, label, detail, warning = false }: {
+  ok: boolean; label: string; detail: string; warning?: boolean;
+}) {
   const isWarning = !ok && warning;
   return (
     <div className={`flex flex-col gap-1 p-3 rounded-lg border
@@ -496,7 +451,8 @@ function buildSimplePdf(jpegBase64: string, imgW: number, imgH: number): Uint8Ar
             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
           </svg>
         ) : (
-          <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" style={{ color: isWarning ? '#d97706' : '#dc2626' }}>
+          <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+            style={{ color: isWarning ? '#d97706' : '#dc2626' }}>
             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
         )}
@@ -505,4 +461,40 @@ function buildSimplePdf(jpegBase64: string, imgW: number, imgH: number): Uint8Ar
       <span className={`text-xs ${ok ? 'text-green-600' : isWarning ? 'text-amber-600' : 'text-red-600'}`}>{detail}</span>
     </div>
   );
+}
+
+// Builds a minimal valid PDF containing one JPEG — no libraries needed
+function buildSimplePdf(jpegBase64: string, imgW: number, imgH: number): Uint8Array {
+  const ptW = Math.round(imgW * 0.75);
+  const ptH = Math.round(imgH * 0.75);
+  const imgBytes = Uint8Array.from(atob(jpegBase64), (c) => c.charCodeAt(0));
+  const enc   = new TextEncoder();
+  const parts: Uint8Array[] = [];
+  const offsets: number[]   = [];
+  let pos = 0;
+
+  const push = (s: string) => { const b = enc.encode(s); parts.push(b); pos += b.length; };
+  const pushBytes = (b: Uint8Array) => { parts.push(b); pos += b.length; };
+
+  push('%PDF-1.4\n');
+  offsets[1] = pos; push(`1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n`);
+  offsets[2] = pos; push(`2 0 obj\n<< /Type /Pages /Kids [4 0 R] /Count 1 >>\nendobj\n`);
+  offsets[3] = pos;
+  push(`3 0 obj\n<< /Type /XObject /Subtype /Image /Width ${imgW} /Height ${imgH} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${imgBytes.length} >>\nstream\n`);
+  pushBytes(imgBytes);
+  push(`\nendstream\nendobj\n`);
+  offsets[4] = pos; push(`4 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${ptW} ${ptH}] /Contents 5 0 R /Resources << /XObject << /Im1 3 0 R >> >> >>\nendobj\n`);
+  offsets[5] = pos;
+  const stream = `q ${ptW} 0 0 ${ptH} 0 0 cm /Im1 Do Q`;
+  push(`5 0 obj\n<< /Length ${stream.length} >>\nstream\n${stream}\nendstream\nendobj\n`);
+  const xrefPos = pos;
+  push(`xref\n0 6\n0000000000 65535 f \n`);
+  for (let i = 1; i <= 5; i++) push(`${String(offsets[i]).padStart(10, '0')} 00000 n \n`);
+  push(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefPos}\n%%EOF`);
+
+  const total = parts.reduce((s, p) => s + p.length, 0);
+  const out   = new Uint8Array(total);
+  let offset  = 0;
+  for (const p of parts) { out.set(p, offset); offset += p.length; }
+  return out;
 }
