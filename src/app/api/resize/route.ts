@@ -181,9 +181,9 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const file = formData.get('image') as File | null;
     const preset = formData.get('preset') as string | null;
-    const customMinKB    = parseInt(formData.get('customMinKB') as string) || 10;
-    const customMaxKB    = parseInt(formData.get('customMaxKB') as string) || 100;
-    const customWidthVal = parseInt(formData.get('customWidth') as string) || 0;
+    const customMinKB     = parseInt(formData.get('customMinKB') as string) || 10;
+    const customMaxKB     = parseInt(formData.get('customMaxKB') as string) || 100;
+    const customWidthVal  = parseInt(formData.get('customWidth') as string) || 0;
     const customHeightVal = parseInt(formData.get('customHeight') as string) || 0;
     const enableWhiteBg = formData.get('whiteBg') === 'true';
     const enableTrim = formData.get('trimSignature') === 'true';
