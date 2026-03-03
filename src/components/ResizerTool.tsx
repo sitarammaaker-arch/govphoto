@@ -45,6 +45,8 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
   const [selectedPreset, setSelectedPreset] = useState<string>('ssc_photo');
   const [customMinKB, setCustomMinKB]       = useState<string>('20');
   const [customMaxKB, setCustomMaxKB]       = useState<string>('50');
+  const [customWidth, setCustomWidth]       = useState<string>('');
+  const [customHeight, setCustomHeight]     = useState<string>('');
   const [enableWhiteBg, setEnableWhiteBg]   = useState<boolean>(false);
   const [enableTrim, setEnableTrim]         = useState<boolean>(false);
   const [dpi300, setDpi300]                 = useState<boolean>(false);
@@ -121,6 +123,8 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
       fd.append('preset', selectedPreset);
       fd.append('customMinKB', customMinKB);
       fd.append('customMaxKB', customMaxKB);
+      fd.append('customWidth', customWidth);
+      fd.append('customHeight', customHeight);
       fd.append('whiteBg', enableWhiteBg.toString());
       fd.append('trimSignature', enableTrim.toString());
       fd.append('dpi300', dpi300.toString());
@@ -196,24 +200,67 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
         </div>
 
         {selectedPreset === 'custom' && (
-          <div className="mt-4 p-4 bg-sky-50 rounded-xl border border-sky-100 space-y-3">
-            <p className="text-sm font-semibold text-sky-800">Custom Size Settings</p>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label htmlFor="min-kb" className="text-xs font-medium text-slate-600 block mb-1">Min Size (KB)</label>
-                <input id="min-kb" type="number" value={customMinKB} onChange={(e) => setCustomMinKB(e.target.value)}
-                  min="5" max="5000"
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
-              </div>
-              <div>
-                <label htmlFor="max-kb" className="text-xs font-medium text-slate-600 block mb-1">Max Size (KB)</label>
-                <input id="max-kb" type="number" value={customMaxKB} onChange={(e) => setCustomMaxKB(e.target.value)}
-                  min="5" max="5000"
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
-              </div>
-            </div>
-          </div>
-        )}
+  <div className="mt-4 p-4 bg-sky-50 rounded-xl border border-sky-100 space-y-3">
+    <p className="text-sm font-semibold text-sky-800">Custom Size Settings</p>
+
+    {/* KB Size Row */}
+    <div className="grid grid-cols-2 gap-3">
+      <div>
+        <label htmlFor="min-kb" className="text-xs font-medium text-slate-600 block mb-1">Min Size (KB)</label>
+        <input
+          id="min-kb"
+          type="number"
+          value={customMinKB}
+          onChange={(e) => setCustomMinKB(e.target.value)}
+          min="5" max="5000"
+          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+        />
+      </div>
+      <div>
+        <label htmlFor="max-kb" className="text-xs font-medium text-slate-600 block mb-1">Max Size (KB)</label>
+        <input
+          id="max-kb"
+          type="number"
+          value={customMaxKB}
+          onChange={(e) => setCustomMaxKB(e.target.value)}
+          min="5" max="5000"
+          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+        />
+      </div>
+    </div>
+
+    {/* Width & Height Row */}
+    <div className="grid grid-cols-2 gap-3">
+      <div>
+        <label htmlFor="custom-width" className="text-xs font-medium text-slate-600 block mb-1">Width (px)</label>
+        <input
+          id="custom-width"
+          type="number"
+          value={customWidth}
+          onChange={(e) => setCustomWidth(e.target.value)}
+          min="1" max="5000"
+          placeholder="Optional"
+          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 placeholder-slate-300"
+        />
+      </div>
+      <div>
+        <label htmlFor="custom-height" className="text-xs font-medium text-slate-600 block mb-1">Height (px)</label>
+        <input
+          id="custom-height"
+          type="number"
+          value={customHeight}
+          onChange={(e) => setCustomHeight(e.target.value)}
+          min="1" max="5000"
+          placeholder="Optional"
+          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 placeholder-slate-300"
+        />
+      </div>
+    </div>
+    <p className="text-xs text-slate-400">
+      Add width and height for exact dimensions, or keep blank to preserve original ratio.
+    </p>
+  </div>
+)}
 
         <div className="mt-4 pt-4 border-t border-slate-100">
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Advanced Options</p>
