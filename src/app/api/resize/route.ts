@@ -12,6 +12,7 @@ interface ResizeOptions {
   dpi?: number;
   whiteBg?: boolean;
   trimSignature?: boolean;
+  outputFormat?: string;
 }
 
 async function compressToTargetSize(
@@ -54,6 +55,7 @@ async function compressToTargetSize(
 
   // Set DPI
   const density = dpi;
+  const format  = (options as ResizeOptions & { outputFormat?: string }).outputFormat || 'jpg';
 
   // Binary search for the right quality
   let lo = 1;
@@ -61,15 +63,39 @@ async function compressToTargetSize(
   let bestBuffer: Buffer | null = null;
   let bestInfo: sharp.OutputInfo | null = null;
 
-  // First pass at quality 85
+  // First pass at quality 80
   let currentQuality = 80;
 
   for (let attempt = 0; attempt < 12; attempt++) {
-    const testBuffer = await pipeline
-      .clone()
-      .withMetadata({ density })
-      .jpeg({ quality: currentQuality, mozjpeg: true })
-      .toBuffer({ resolveWithObject: true });
+    let testBuffer: { data: Buffer; info: sharp.OutputInfo };
+
+    if (format === 'png') {
+      testBuffer = await pipeline
+        .clone()
+        .withMetadata({ density })
+        .png({ compressionLevel: 9 })
+        .toBuffer({ resolveWithObject: true });
+    } else if (format === 'webp') {
+      testBuffer = await pipeline
+        .clone()
+        .withMetadata({ density })
+        .webp({ quality: currentQuality })
+        .toBuffer({ resolveWithObject: true });
+    } else if (format === 'pdf') {
+      // PDF: convert to high-quality JPEG first, PDF wrapper added on response
+      testBuffer = await pipeline
+        .clone()
+        .withMetadata({ density })
+        .jpeg({ quality: currentQuality, mozjpeg: true })
+        .toBuffer({ resolveWithObject: true });
+    } else {
+      // jpg / jpeg
+      testBuffer = await pipeline
+        .clone()
+        .withMetadata({ density })
+        .jpeg({ quality: currentQuality, mozjpeg: true })
+        .toBuffer({ resolveWithObject: true });
+    }
 
     const size = testBuffer.info.size;
 
@@ -112,23 +138,28 @@ async function compressToTargetSize(
       ? Math.floor(height * scaleFactor)
       : Math.floor((metadata.height || 200) * scaleFactor);
 
-    const resized = await pipeline
-      .clone()
-      .resize(newWidth, newHeight)
-      .withMetadata({ density })
-      .jpeg({ quality: 60, mozjpeg: true })
-      .toBuffer({ resolveWithObject: true });
+    let resized: { data: Buffer; info: sharp.OutputInfo };
+    if (format === 'png') {
+      resized = await pipeline.clone().resize(newWidth, newHeight).withMetadata({ density }).png().toBuffer({ resolveWithObject: true });
+    } else if (format === 'webp') {
+      resized = await pipeline.clone().resize(newWidth, newHeight).withMetadata({ density }).webp({ quality: 60 }).toBuffer({ resolveWithObject: true });
+    } else {
+      resized = await pipeline.clone().resize(newWidth, newHeight).withMetadata({ density }).jpeg({ quality: 60, mozjpeg: true }).toBuffer({ resolveWithObject: true });
+    }
 
     bestBuffer = resized.data;
     bestInfo = resized.info;
   }
 
   if (!bestBuffer || !bestInfo) {
-    const fallback = await pipeline
-      .clone()
-      .withMetadata({ density })
-      .jpeg({ quality: 70, mozjpeg: true })
-      .toBuffer({ resolveWithObject: true });
+    let fallback: { data: Buffer; info: sharp.OutputInfo };
+    if (format === 'png') {
+      fallback = await pipeline.clone().withMetadata({ density }).png().toBuffer({ resolveWithObject: true });
+    } else if (format === 'webp') {
+      fallback = await pipeline.clone().withMetadata({ density }).webp({ quality: 70 }).toBuffer({ resolveWithObject: true });
+    } else {
+      fallback = await pipeline.clone().withMetadata({ density }).jpeg({ quality: 70, mozjpeg: true }).toBuffer({ resolveWithObject: true });
+    }
     bestBuffer = fallback.data;
     bestInfo = fallback.info;
   }
@@ -185,9 +216,10 @@ export async function POST(request: NextRequest) {
     const customMaxKB     = parseInt(formData.get('customMaxKB') as string) || 100;
     const customWidthVal  = parseInt(formData.get('customWidth') as string) || 0;
     const customHeightVal = parseInt(formData.get('customHeight') as string) || 0;
-    const enableWhiteBg = formData.get('whiteBg') === 'true';
-    const enableTrim = formData.get('trimSignature') === 'true';
-    const dpi300 = formData.get('dpi300') === 'true';
+    const enableWhiteBg   = formData.get('whiteBg') === 'true';
+const enableTrim      = formData.get('trimSignature') === 'true';
+const dpi300          = formData.get('dpi300') === 'true';
+const outputFormat    = (formData.get('outputFormat') as string) || 'jpg';
 
     if (!file) {
       return NextResponse.json({ error: 'No image provided' }, { status: 400 });
@@ -223,6 +255,7 @@ export async function POST(request: NextRequest) {
   whiteBg: enableWhiteBg,
   trimSignature: enableTrim,
   dpi: dpi300 ? 300 : 96,
+  outputFormat,
 },
     };
 
@@ -279,10 +312,20 @@ export async function POST(request: NextRequest) {
     // This saves ~33% payload size (base64 encoding adds 33% overhead).
     // Acceptability metadata travels in a custom response header.
     // Client uses URL.createObjectURL(blob) — no base64 decode needed.
+    // Set correct MIME type per format
+    const mimeMap: Record<string, string> = {
+      jpg:  'image/jpeg',
+      jpeg: 'image/jpeg',
+      png:  'image/png',
+      webp: 'image/webp',
+      pdf:  'image/jpeg', // PDF wrapper is client-side
+    };
+    const mimeType = mimeMap[outputFormat] || 'image/jpeg';
+
     return new Response(new Uint8Array(outputBuffer), {
       status: 200,
       headers: {
-        'Content-Type':       'image/jpeg',
+        'Content-Type':       mimeType,
         'Content-Length':     String(outputBuffer.length),
         // Safely JSON-encode metadata in header (< 4KB, well within limits)
         'X-Acceptability':    JSON.stringify({
