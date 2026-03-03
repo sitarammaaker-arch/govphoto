@@ -27,6 +27,7 @@ export default function Header() {
           <a href="#how-it-works" className="hover:text-sky-600 transition-colors">How It Works</a>
           <a href="#exams"        className="hover:text-sky-600 transition-colors">Exam Guide</a>
           <a href="#faq"          className="hover:text-sky-600 transition-colors">FAQ</a>
+          <Link href="/blog" className="hover:text-sky-600 transition-colors">Blog</Link>
           <a href="#tool"         className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg transition-colors shadow-sm">
             Resize Now →
           </a>
