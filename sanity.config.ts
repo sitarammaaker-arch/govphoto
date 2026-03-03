@@ -7,8 +7,10 @@ export default defineConfig({
   name: 'default',
   title: 'SignResizer Blog',
 
-  projectId: 'qy1mu06e',   // ← replace with your real Project ID
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: 'production',
+
+  basePath: '/studio',
 
   plugins: [structureTool(), visionTool()],
 
