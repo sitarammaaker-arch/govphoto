@@ -12,9 +12,10 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
-  const post = await getPostBySlug(params.slug)
+  const { slug } = await params
+  const post = await getPostBySlug(slug)
   if (!post) return {}
   return {
     title: post.seoTitle || `${post.title} | SignResizer Blog`,
@@ -23,13 +24,15 @@ export async function generateMetadata(
 }
 
 export default async function PostPage(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  const post = await getPostBySlug(params.slug)
+  const { slug } = await params
+  const post = await getPostBySlug(slug)
   if (!post) notFound()
 
   return (
     <main className="min-h-screen bg-slate-50">
+
       {/* Header */}
       <div className="bg-white border-b border-slate-100 py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
@@ -51,7 +54,9 @@ export default async function PostPage(
       {/* Content */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
         <article className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8 prose prose-slate prose-headings:font-bold prose-h2:text-xl prose-h3:text-lg prose-a:text-sky-600 max-w-none">
-          {post.body && <PortableText value={post.body as Parameters<typeof PortableText>[0]['value']} />}
+          {post.body && (
+            <PortableText value={post.body as Parameters<typeof PortableText>[0]['value']} />
+          )}
         </article>
 
         {/* CTA */}
@@ -68,6 +73,7 @@ export default async function PostPage(
           </Link>
         </div>
       </div>
+
     </main>
   )
 }
