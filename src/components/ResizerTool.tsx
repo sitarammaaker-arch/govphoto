@@ -138,7 +138,7 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
         ctx.drawImage(img, 0, 0);
         const jpegData = canvas.toDataURL('image/jpeg', 0.95).split(',')[1];
         const pdfBytes = buildSimplePdf(jpegData, img.naturalWidth, img.naturalHeight);
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' });
         const url  = URL.createObjectURL(blob);
         const a    = document.createElement('a');
         a.href = url; a.download = `${baseName}.pdf`; a.click();
