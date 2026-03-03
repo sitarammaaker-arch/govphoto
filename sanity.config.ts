@@ -7,7 +7,7 @@ export default defineConfig({
   name: 'default',
   title: 'SignResizer Blog',
 
-  projectId: 'YOUR_PROJECT_ID',   // ← replace with your real Project ID
+  projectId: 'qy1mu06e',   // ← replace with your real Project ID
   dataset: 'production',
 
   plugins: [structureTool(), visionTool()],
