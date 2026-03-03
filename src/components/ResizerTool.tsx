@@ -39,7 +39,8 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
   const [customMinKB, setCustomMinKB]       = useState<string>('20');
   const [customMaxKB, setCustomMaxKB]       = useState<string>('50');
   const [customWidth, setCustomWidth]       = useState<string>('');
-  const [customHeight, setCustomHeight]     = useState<string>('');
+const [customHeight, setCustomHeight]     = useState<string>('');
+const [outputFormat, setOutputFormat]     = useState<string>('jpg');
   const [enableWhiteBg, setEnableWhiteBg]   = useState<boolean>(false);
   const [enableTrim, setEnableTrim]         = useState<boolean>(false);
   const [dpi300, setDpi300]                 = useState<boolean>(false);
@@ -92,7 +93,8 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
       fd.append('customMinKB', customMinKB);
       fd.append('customMaxKB', customMaxKB);
       fd.append('customWidth', customWidth);
-      fd.append('customHeight', customHeight);
+fd.append('customHeight', customHeight);
+fd.append('outputFormat', outputFormat);
       fd.append('whiteBg', enableWhiteBg.toString());
       fd.append('trimSignature', enableTrim.toString());
       fd.append('dpi300', dpi300.toString());
@@ -120,12 +122,40 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
     if (typeof window !== 'undefined' && (window as unknown as { gtag?: Function }).gtag) {
       (window as unknown as { gtag: Function }).gtag('event', 'download', { event_category: 'image', event_label: selectedPreset });
     }
-    const a = document.createElement('a');
     const preset = PRESETS.find((p) => p.id === selectedPreset);
-    a.href = resultImage;
-    a.download = `signresizer_${preset?.id ?? 'resized'}_${Date.now()}.jpg`;
+    const baseName = `signresizer_${preset?.id ?? 'resized'}_${Date.now()}`;
+
+    if (outputFormat === 'pdf') {
+      // Build a minimal single-image PDF client-side — no extra library needed
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width  = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        ctx.drawImage(img, 0, 0);
+        const jpegData = canvas.toDataURL('image/jpeg', 0.95).split(',')[1];
+        const pdfContent = buildSimplePdf(jpegData, img.naturalWidth, img.naturalHeight);
+        const blob = new Blob([pdfContent], { type: 'application/pdf' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = `${baseName}.pdf`;
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+      img.src = resultImage;
+      return;
+    }
+
+    const extMap: Record<string, string> = { jpg: 'jpg', jpeg: 'jpg', png: 'png', webp: 'webp' };
+    const ext = extMap[outputFormat] || 'jpg';
+    const a = document.createElement('a');
+    a.href     = resultImage;
+    a.download = `${baseName}.${ext}`;
     a.click();
-  }, [resultImage, selectedPreset]);
+  }, [resultImage, selectedPreset, outputFormat]);
 
   const handleReset = useCallback(() => {
     if (prevObjUrlRef.current) { URL.revokeObjectURL(prevObjUrlRef.current); prevObjUrlRef.current = null; }
@@ -206,6 +236,28 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
             </p>
           </div>
         )}
+
+        {/* Advanced Options */}
+        <div className="mt-4 pt-4 border-t border-slate-100">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Advanced Options</p>
+          {/* Download Format */}
+        <div className="mt-4 pt-4 border-t border-slate-100">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Download Format</p>
+          <div className="flex flex-wrap gap-2">
+            {['jpg', 'png', 'webp', 'pdf'].map((fmt) => (
+              <button
+                key={fmt}
+                onClick={() => setOutputFormat(fmt)}
+                className={`px-4 py-1.5 rounded-lg text-sm font-semibold border-2 transition-colors duration-150
+                  ${outputFormat === fmt
+                    ? 'bg-sky-500 border-sky-500 text-white'
+                    : 'bg-white border-slate-200 text-slate-600 hover:border-sky-400 hover:text-sky-600'}`}
+              >
+                {fmt.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* Advanced Options */}
         <div className="mt-4 pt-4 border-t border-slate-100">
@@ -394,6 +446,46 @@ function Pill({ children, green }: { children: React.ReactNode; green?: boolean 
 }
 
 function CheckItem({ ok, label, detail, warning = false }: { ok: boolean; label: string; detail: string; warning?: boolean }) {
+  // Builds a minimal valid PDF containing one JPEG image — no libraries needed
+function buildSimplePdf(jpegBase64: string, imgW: number, imgH: number): Uint8Array {
+  const ptW = Math.round(imgW * 0.75); // px → pt (72pt/96px)
+  const ptH = Math.round(imgH * 0.75);
+  const imgBytes = Uint8Array.from(atob(jpegBase64), c => c.charCodeAt(0));
+
+  const enc  = new TextEncoder();
+  const parts: Uint8Array[] = [];
+  const offsets: number[]   = [];
+  let pos = 0;
+
+  const push = (s: string) => { const b = enc.encode(s); parts.push(b); pos += b.length; };
+  const pushBytes = (b: Uint8Array) => { parts.push(b); pos += b.length; };
+
+  push('%PDF-1.4\n');
+  offsets[1] = pos;
+  push(`1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n`);
+  offsets[2] = pos;
+  push(`2 0 obj\n<< /Type /Pages /Kids [4 0 R] /Count 1 >>\nendobj\n`);
+  offsets[3] = pos;
+  push(`3 0 obj\n<< /Type /XObject /Subtype /Image /Width ${imgW} /Height ${imgH} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${imgBytes.length} >>\nstream\n`);
+  pushBytes(imgBytes);
+  push(`\nendstream\nendobj\n`);
+  offsets[4] = pos;
+  push(`4 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${ptW} ${ptH}] /Contents 5 0 R /Resources << /XObject << /Im1 3 0 R >> >> >>\nendobj\n`);
+  offsets[5] = pos;
+  const stream = `q ${ptW} 0 0 ${ptH} 0 0 cm /Im1 Do Q`;
+  push(`5 0 obj\n<< /Length ${stream.length} >>\nstream\n${stream}\nendstream\nendobj\n`);
+
+  const xrefPos = pos;
+  push(`xref\n0 6\n0000000000 65535 f \n`);
+  for (let i = 1; i <= 5; i++) push(`${String(offsets[i]).padStart(10,'0')} 00000 n \n`);
+  push(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefPos}\n%%EOF`);
+
+  const total = parts.reduce((s, p) => s + p.length, 0);
+  const out   = new Uint8Array(total);
+  let offset  = 0;
+  for (const p of parts) { out.set(p, offset); offset += p.length; }
+  return out;
+}
   const isWarning = !ok && warning;
   return (
     <div className={`flex flex-col gap-1 p-3 rounded-lg border
