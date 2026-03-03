@@ -216,14 +216,14 @@ export async function POST(request: NextRequest) {
       railway_photo: { targetMinKB: 20, targetMaxKB: 50, whiteBg: true, dpi: dpi300 ? 300 : 96 },
       banking_photo: { targetMinKB: 20, targetMaxKB: 50, whiteBg: true, dpi: dpi300 ? 300 : 96 },
       custom: {
-        targetMinKB: parseInt(customMinKB || '20'),
-        targetMaxKB: parseInt(customMaxKB || '50'),
-        width:  customWidthVal  > 0 ? customWidthVal  : undefined,
-        height: customHeightVal > 0 ? customHeightVal : undefined,
-        whiteBg: enableWhiteBg,
-        trimSignature: enableTrim,
-        dpi: dpi300 ? 300 : 96,
-      },
+  targetMinKB: customMinKB,
+  targetMaxKB: customMaxKB,
+  width:  customWidthVal  > 0 ? customWidthVal  : undefined,
+  height: customHeightVal > 0 ? customHeightVal : undefined,
+  whiteBg: enableWhiteBg,
+  trimSignature: enableTrim,
+  dpi: dpi300 ? 300 : 96,
+},
     };
 
     const selectedPreset = preset && presets[preset] ? presets[preset] : presets.ssc_photo;
