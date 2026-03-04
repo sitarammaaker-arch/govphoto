@@ -47,24 +47,13 @@ export default async function PostPage(
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mt-2 leading-snug">
             {post.title}
           </h1>
-          <p className="text-slate-500 mt-3">{post.excerpt}</p>
+          <p className="text-slate-500 mt-3 text-base leading-relaxed">{post.excerpt}</p>
         </div>
       </div>
 
       {/* Content */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
-        <article className="className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-10 max-w-none
-  prose prose-slate prose-lg
-  prose-headings:font-extrabold prose-headings:text-slate-800 prose-headings:tracking-tight
-  prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-5 prose-h2:pb-2 prose-h2:border-b prose-h2:border-slate-100
-  prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-sky-700
-  prose-p:text-slate-600 prose-p:leading-8 prose-p:mb-5
-  prose-li:text-slate-600 prose-li:leading-8 prose-li:my-1
-  prose-ul:my-5 prose-ul:pl-6
-  prose-ol:my-5 prose-ol:pl-6
-  prose-strong:text-slate-800 prose-strong:font-bold
-  prose-a:text-sky-600 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
-  prose-blockquote:border-sky-400 prose-blockquote:bg-sky-50 prose-blockquote:rounded-lg prose-blockquote:px-4">
+        <article className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-10 max-w-none prose prose-slate prose-lg prose-headings:font-extrabold prose-headings:text-slate-800 prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-slate-100 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-sky-700 prose-p:text-slate-600 prose-p:leading-8 prose-p:mb-4 prose-li:text-slate-600 prose-li:leading-7 prose-ul:my-4 prose-ol:my-4 prose-strong:text-slate-800 prose-strong:font-bold prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline">
           {post.body && (
             <PortableText value={post.body as Parameters<typeof PortableText>[0]['value']} />
           )}
