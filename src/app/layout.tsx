@@ -27,8 +27,10 @@ export const metadata: Metadata = {
     'banking exam photo', 'sarkari job photo',
   ],
   openGraph: {
-    title: 'Free Photo & Signature Resizer for Govt Job Forms',
+    title: 'SignResizer — Free Photo Resizer for Govt Job Forms',
     description: 'Free tool to resize photo and signature for SSC, UPSC, Railway, and all Indian government exams.',
+    url: 'https://www.signresizer.com',
+    images: [{ url: 'https://www.signresizer.com/og-image.jpg', width: 1200, height: 630 }],
     type: 'website',
     locale: 'en_IN',
     siteName: 'SignResizer',
