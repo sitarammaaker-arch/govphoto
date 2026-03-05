@@ -55,7 +55,92 @@ const AD_SLOTS = {
   // "Exit intent" zone — catches users who didn't convert on other placements.
   aboveFooter: '4444444444',
 } as const;
-
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is the photo size for SSC exam forms?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'For SSC exam forms, the photo should be 20KB to 50KB in JPEG format. Dimensions are 3.5cm x 4.5cm with a plain white background.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the signature size for government job forms?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'For most government job forms including SSC, Railway and Banking exams, the signature file should be 10KB to 20KB in JPEG format on a white background.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How to reduce photo size to 20KB online?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Upload your photo on SignResizer, select the SSC Photo preset (20-50KB) and click Resize. The tool automatically compresses your photo to the required size.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What photo format is required for UPSC application?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'UPSC requires JPEG format with file size between 20KB to 300KB. Dimensions should be 200x230 pixels with a plain white background.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is SignResizer free to use?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, SignResizer is completely free to use. No registration, login or payment required. Images are never stored on the server.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is passport size photo dimensions in pixels?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Passport size photo dimensions are 3.5cm x 4.5cm which equals 413x531 pixels at 300 DPI. For UPSC and banking exams the required size is 200x230 pixels.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I convert PNG to JPG for government forms?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. SignResizer automatically converts PNG images to JPG format as required by most government exam forms. Transparent backgrounds are replaced with white.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'My photo is above 50KB, how to reduce it?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Upload your photo to SignResizer, select the SSC Photo preset for 20-50KB and click Resize. Smart compression brings the file size down without affecting quality.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does SignResizer store my photos?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. Photos are processed entirely in server memory and deleted immediately after processing. SignResizer has zero data retention.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What if my exam has a different size requirement?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Use the Custom Size preset on SignResizer. Enter your required minimum and maximum KB values and the tool will compress your image to fit exactly within that range.',
+      },
+    },
+  ],
+}
 export default function Home() {
   return (
     <main className="min-h-screen">
@@ -120,5 +205,9 @@ export default function Home() {
 
       <Footer />
     </main>
+    <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+/>
   );
 }
