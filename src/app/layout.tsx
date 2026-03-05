@@ -15,11 +15,11 @@ const sora = Sora({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.signresizer.com'),
   title: {
-    default: 'Free Photo & Signature Resizer for Govt Job Forms | SignResizer',
+    default: 'SSC UPSC Railway Photo Resizer — Resize to 20KB Free 2026 | SignResizer',
     template: '%s | SignResizer',
   },
   description:
-    'Free online tool to resize photo and signature for SSC, Railway, CET, UPSC and other government exams. Make photo 20KB, 50KB instantly. No registration needed.',
+    'Free online tool to resize photo and signature for SSC, UPSC, Railway, Banking exam forms. Resize to 20KB–50KB JPEG instantly. No registration. White background. Works on mobile. India's #1 govt form photo resizer.',
   keywords: [
     'government job photo resize', 'SSC photo size', 'UPSC photo size',
     'railway exam photo', 'signature resize', 'photo 20kb', 'photo 50kb',
