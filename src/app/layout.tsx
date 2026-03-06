@@ -47,19 +47,6 @@ export const metadata: Metadata = {
   },
 };
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    { '@type': 'Question', name: 'What is the photo size for SSC exam forms?', acceptedAnswer: { '@type': 'Answer', text: 'For SSC exam forms, the photo should be between 20KB to 50KB in JPEG format, 3.5cm x 4.5cm with a white background.' } },
-    { '@type': 'Question', name: 'What is the signature size for government job forms?', acceptedAnswer: { '@type': 'Answer', text: 'For SSC, Railway, and Banking exams the signature file should be 10KB to 20KB in JPEG format on a white background.' } },
-    { '@type': 'Question', name: 'How to reduce photo size to 20KB online?', acceptedAnswer: { '@type': 'Answer', text: 'Upload your photo on SignResizer, select the SSC Photo preset (20-50KB), and click Resize.' } },
-    { '@type': 'Question', name: 'What photo format is required for UPSC application?', acceptedAnswer: { '@type': 'Answer', text: 'UPSC requires JPEG/JPG format, 20KB to 300KB, dimensions 200x230 pixels with a plain white background.' } },
-    { '@type': 'Question', name: 'Is this tool free to use?', acceptedAnswer: { '@type': 'Answer', text: 'Yes, SignResizer is completely free. No registration required. Images are never stored on our servers.' } },
-    { '@type': 'Question', name: 'What is passport size photo dimensions in pixels?', acceptedAnswer: { '@type': 'Answer', text: 'Passport size is 3.5cm x 4.5cm — approximately 413x531 pixels at 300 DPI or 200x230 pixels at standard resolution.' } },
-  ],
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={sora.variable}>
@@ -97,10 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="canonical" href="https://www.signresizer.com" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
+        
       </head>
       <body className="font-body bg-slate-50 text-slate-800 antialiased">
         {children}
