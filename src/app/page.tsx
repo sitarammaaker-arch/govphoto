@@ -178,18 +178,18 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {blogPosts.map((post) => (
-              
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="flex items-center gap-3 bg-white border border-slate-100 rounded-xl px-4 py-3 hover:border-sky-200 hover:shadow-sm transition-all group"
-              >
-                <span className="text-xl">{post.icon}</span>
-                <span className="text-sm font-semibold text-slate-700 group-hover:text-sky-600 transition-colors leading-snug">
-                  {post.title}
-                </span>
-                <span className="ml-auto text-slate-300 group-hover:text-sky-400 transition-colors">→</span>
-              </a>
-            ))}
+  
+    key={post.slug}
+    href={`/blog/${post.slug}`}
+    className="flex items-center gap-3 bg-white border border-slate-100 rounded-xl px-4 py-3 hover:border-sky-200 hover:shadow-sm transition-all group"
+  >
+    <span className="text-xl">{post.icon}</span>
+    <span className="text-sm font-semibold text-slate-700 group-hover:text-sky-600 transition-colors leading-snug">
+      {post.title}
+    </span>
+    <span className="ml-auto text-slate-300 group-hover:text-sky-400 transition-colors">→</span>
+  </a>
+))}
           </div>
         </section>
 
