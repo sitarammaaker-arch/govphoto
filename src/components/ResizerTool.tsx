@@ -167,11 +167,95 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
 
   return (
     <div className="space-y-6">
-
-      {/* ── Step 1: Preset ── */}
+{/* ── Step 1: Upload ── */}
       <div className="card p-5 sm:p-6">
         <h2 className="text-xl font-bold text-slate-800 mb-1 flex items-center gap-2">
           <span className="w-7 h-7 rounded-full bg-sky-500 text-white text-sm flex items-center justify-center font-bold">1</span>
+          Upload Image
+        </h2>
+        <p className="text-slate-500 text-sm mb-4">Drag &amp; drop or click to select. JPG/PNG, max 5MB.</p>
+
+        <div
+          onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}
+          onClick={() => !originalFile && fileInputRef.current?.click()}
+          className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-colors duration-200
+            ${isDragging ? 'border-sky-400 bg-sky-50' : originalFile
+              ? 'border-green-300 bg-green-50 cursor-default'
+              : 'border-slate-300 hover:border-sky-400 hover:bg-sky-50 cursor-pointer'}`}
+        >
+          <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+            onChange={handleFileInput} className="hidden" />
+
+          {originalFile ? (
+            <div className="space-y-3">
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="text-left">
+                  <p className="font-semibold text-slate-800 text-sm">{originalFile.name}</p>
+                  <p className="text-xs text-slate-500">
+                    {originalSizeKB} KB{originalDims ? ` • ${originalDims.w}×${originalDims.h}px` : ''} • {originalFile.type.split('/')[1].toUpperCase()}
+                  </p>
+                </div>
+              </div>
+              <button onClick={(e) => { e.stopPropagation(); handleReset(); }}
+                className="text-xs text-red-500 hover:text-red-700 underline">
+                Remove &amp; upload different image
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-sky-50 border-2 border-sky-100 flex items-center justify-center">
+                <svg className="w-7 h-7 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-semibold text-slate-700">Drop image here or <span className="text-sky-600 underline">browse</span></p>
+                <p className="text-sm text-slate-400 mt-1">JPG, JPEG, PNG • Max 5MB</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {error && (
+          <div role="alert" className="mt-3 flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+            <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            {error}
+          </div>
+        )}
+
+        <button
+          onClick={handleResize} disabled={!originalFile || isProcessing}
+          className={`mt-4 w-full flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-base transition-colors duration-200
+            ${!originalFile || isProcessing
+              ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+              : 'bg-sky-500 hover:bg-sky-600 text-white shadow-md active:scale-[0.98]'}`}
+        >
+          {isProcessing ? (
+            <><div className="spinner" />Processing Image...</>
+          ) : (
+            <>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Resize to {activePreset?.id === 'custom'
+                ? `${customMinKB}–${customMaxKB} KB${customWidth && customHeight ? ` • ${customWidth}×${customHeight}px` : ''}`
+                : `${activePreset?.minKB}–${activePreset?.maxKB} KB`} as {outputFormat.toUpperCase()}
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* ── Step 2: Preset ── */}
+      <div className="card p-5 sm:p-6">
+        <h2 className="text-xl font-bold text-slate-800 mb-1 flex items-center gap-2">
+          <span className="w-7 h-7 rounded-full bg-sky-500 text-white text-sm flex items-center justify-center font-bold">2</span>
           Select Preset
         </h2>
         <p className="text-slate-500 text-sm mb-4">Choose the exam type or set custom size</p>
@@ -263,91 +347,7 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
         </div>
       </div>
 
-      {/* ── Step 2: Upload ── */}
-      <div className="card p-5 sm:p-6">
-        <h2 className="text-xl font-bold text-slate-800 mb-1 flex items-center gap-2">
-          <span className="w-7 h-7 rounded-full bg-sky-500 text-white text-sm flex items-center justify-center font-bold">2</span>
-          Upload Image
-        </h2>
-        <p className="text-slate-500 text-sm mb-4">Drag &amp; drop or click to select. JPG/PNG, max 5MB.</p>
-
-        <div
-          onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}
-          onClick={() => !originalFile && fileInputRef.current?.click()}
-          className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-colors duration-200
-            ${isDragging ? 'border-sky-400 bg-sky-50' : originalFile
-              ? 'border-green-300 bg-green-50 cursor-default'
-              : 'border-slate-300 hover:border-sky-400 hover:bg-sky-50 cursor-pointer'}`}
-        >
-          <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png"
-            onChange={handleFileInput} className="hidden" />
-
-          {originalFile ? (
-            <div className="space-y-3">
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="text-left">
-                  <p className="font-semibold text-slate-800 text-sm">{originalFile.name}</p>
-                  <p className="text-xs text-slate-500">
-                    {originalSizeKB} KB{originalDims ? ` • ${originalDims.w}×${originalDims.h}px` : ''} • {originalFile.type.split('/')[1].toUpperCase()}
-                  </p>
-                </div>
-              </div>
-              <button onClick={(e) => { e.stopPropagation(); handleReset(); }}
-                className="text-xs text-red-500 hover:text-red-700 underline">
-                Remove &amp; upload different image
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-sky-50 border-2 border-sky-100 flex items-center justify-center">
-                <svg className="w-7 h-7 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                </svg>
-              </div>
-              <div>
-                <p className="font-semibold text-slate-700">Drop image here or <span className="text-sky-600 underline">browse</span></p>
-                <p className="text-sm text-slate-400 mt-1">JPG, JPEG, PNG • Max 5MB</p>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {error && (
-          <div role="alert" className="mt-3 flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
-            <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-            {error}
-          </div>
-        )}
-
-        <button
-          onClick={handleResize} disabled={!originalFile || isProcessing}
-          className={`mt-4 w-full flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-base transition-colors duration-200
-            ${!originalFile || isProcessing
-              ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-              : 'bg-sky-500 hover:bg-sky-600 text-white shadow-md active:scale-[0.98]'}`}
-        >
-          {isProcessing ? (
-            <><div className="spinner" />Processing Image...</>
-          ) : (
-            <>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              Resize to {activePreset?.id === 'custom'
-                ? `${customMinKB}–${customMaxKB} KB${customWidth && customHeight ? ` • ${customWidth}×${customHeight}px` : ''}`
-                : `${activePreset?.minKB}–${activePreset?.maxKB} KB`} as {outputFormat.toUpperCase()}
-            </>
-          )}
-        </button>
-      </div>
-
+      
       {/* ── Step 3: Preview & Download ── */}
       {(originalPreview || resultImage) && (
         <div className="card p-5 sm:p-6">
