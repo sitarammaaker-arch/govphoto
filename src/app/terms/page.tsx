@@ -3,7 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Terms of Use | Sign Resizer',
+  title: 'Terms of Use | SignResizer',
 };
 
 export default function Terms() {
@@ -17,7 +17,7 @@ export default function Terms() {
         <div className="space-y-6 text-slate-600">
           <section>
             <h2 className="text-xl font-bold text-slate-800 mb-3">1. Acceptance</h2>
-            <p>By using Sign Resizer, you agree to these terms. The service is provided free of charge for personal, non-commercial use.</p>
+            <p>By using SignResizer, you agree to these terms. The service is provided free of charge for personal, non-commercial use.</p>
           </section>
 
           <section>

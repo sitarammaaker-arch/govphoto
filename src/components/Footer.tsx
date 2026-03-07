@@ -14,7 +14,7 @@ export default function Footer() {
                 </svg>
               </div>
               <div>
-                <span className="font-bold text-white text-lg leading-none block">Sign Resizer</span>
+                <span className="font-bold text-white text-lg leading-none block">SignResizer</span>
                 <span className="text-xs text-slate-400">Government Job Form Tool</span>
               </div>
             </div>
@@ -54,13 +54,13 @@ export default function Footer() {
         {/* Disclaimer */}
         <div className="border-t border-slate-800 pt-6 mb-6">
           <p className="text-xs text-slate-500 leading-relaxed">
-            <strong className="text-slate-400">Disclaimer:</strong> Sign Resizer is an independent utility tool and is not affiliated with, endorsed by, or connected to any government organization, SSC, UPSC, Railway Board, or any exam conducting authority. Photo and signature size requirements may change with each notification. Always verify the exact requirements from the official exam notification before submission.
+            <strong className="text-slate-400">Disclaimer:</strong> SignResizer is an independent utility tool and is not affiliated with, endorsed by, or connected to any government organization, SSC, UPSC, Railway Board, or any exam conducting authority. Photo and signature size requirements may change with each notification. Always verify the exact requirements from the official exam notification before submission.
           </p>
         </div>
 
         {/* Copyright */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {currentYear} Sign Resizer. All rights reserved.</p>
+          <p>© {currentYear} SignResizer. All rights reserved.</p>
           <p>Built with ❤️ for Indian government job aspirants</p>
         </div>
       </div>

@@ -3,8 +3,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Sign Resizer',
-  description: 'Privacy policy for Sign Resizer — how we handle your data.',
+  title: 'Privacy Policy | SignResizer',
+  description: 'Privacy policy for SignResizer — how we handle your data.',
 };
 
 export default function PrivacyPolicy() {
@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
         <div className="prose prose-slate max-w-none space-y-6 text-slate-600">
           <section>
             <h2 className="text-xl font-bold text-slate-800 mb-3">1. No Image Storage</h2>
-            <p>Sign Resizer processes all uploaded images <strong>entirely in server memory</strong>. We do not write any images to disk, database, or storage systems. Images are permanently deleted from memory immediately after processing and delivering the response to you.</p>
+            <p>SignResizer processes all uploaded images <strong>entirely in server memory</strong>. We do not write any images to disk, database, or storage systems. Images are permanently deleted from memory immediately after processing and delivering the response to you.</p>
           </section>
 
           <section>
