@@ -230,26 +230,7 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
           </div>
         )}
 
-        <button
-          onClick={handleResize} disabled={!originalFile || isProcessing}
-          className={`mt-4 w-full flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-base transition-colors duration-200
-            ${!originalFile || isProcessing
-              ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-              : 'bg-sky-500 hover:bg-sky-600 text-white shadow-md active:scale-[0.98]'}`}
-        >
-          {isProcessing ? (
-            <><div className="spinner" />Processing Image...</>
-          ) : (
-            <>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              Resize to {activePreset?.id === 'custom'
-                ? `${customMinKB}–${customMaxKB} KB${customWidth && customHeight ? ` • ${customWidth}×${customHeight}px` : ''}`
-                : `${activePreset?.minKB}–${activePreset?.maxKB} KB`} as {outputFormat.toUpperCase()}
-            </>
-          )}
-        </button>
+        
       </div>
 
       {/* ── Step 2: Preset ── */}
@@ -355,7 +336,26 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
             <span className="w-7 h-7 rounded-full bg-sky-500 text-white text-sm flex items-center justify-center font-bold">3</span>
             Preview &amp; Download
           </h2>
-
+<button
+          onClick={handleResize} disabled={!originalFile || isProcessing}
+          className={`mt-4 w-full flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-base transition-colors duration-200
+            ${!originalFile || isProcessing
+              ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+              : 'bg-sky-500 hover:bg-sky-600 text-white shadow-md active:scale-[0.98]'}`}
+        >
+          {isProcessing ? (
+            <><div className="spinner" />Processing Image...</>
+          ) : (
+            <>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Resize to {activePreset?.id === 'custom'
+                ? `${customMinKB}–${customMaxKB} KB${customWidth && customHeight ? ` • ${customWidth}×${customHeight}px` : ''}`
+                : `${activePreset?.minKB}–${activePreset?.maxKB} KB`} as {outputFormat.toUpperCase()}
+            </>
+          )}
+        </button>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {originalPreview && (
               <div className="space-y-2">
