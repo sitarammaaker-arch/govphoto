@@ -20,6 +20,20 @@ export const metadata: Metadata = {
   },
   description:
     'Free online tool to resize photo and signature for SSC, UPSC, Railway, Banking exam forms. Resize to 20KB-50KB JPEG instantly. No registration. White background. Works on mobile. Number 1 free govt form photo resizer in India.',
+    // ADD THIS BLOCK:
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180' },
+    ],
+  },
+  manifest: '/site.webmanifest',
+};
   keywords: [
     'government job photo resize', 'SSC photo size', 'UPSC photo size',
     'railway exam photo', 'signature resize', 'photo 20kb', 'photo 50kb',
