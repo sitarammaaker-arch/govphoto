@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     ],
   },
   manifest: '/site.webmanifest',
-};
+},
   keywords: [
     'government job photo resize', 'SSC photo size', 'UPSC photo size',
     'railway exam photo', 'signature resize', 'photo 20kb', 'photo 50kb',
