@@ -5,6 +5,8 @@ const blogPosts = [
   { title: 'SBI PO and Clerk Photo Size', slug: 'sbi-po-clerk-photo-size-requirements', icon: '🏦' },
   { title: 'Passport Size Photo in Pixels', slug: 'passport-size-photo-dimensions-pixels', icon: '🛂' },
   { title: 'How to Resize Photo to 20KB', slug: 'resize-photo-20kb-government-forms', icon: '📸' },
+  { title: 'Reduce Signature Size to 10KB', slug: 'reduce-signature-size-10kb', icon: '✍️' },
+  { title: 'CET Exam Photo Size Guide', slug: 'cet-exam-photo-size-requirements', icon: '🎓' },
 ];
 
 export default function BlogLinks() {
