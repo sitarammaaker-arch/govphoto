@@ -20,6 +20,9 @@ export async function generateMetadata(
   return {
     title: post.seoTitle || `${post.title} | SignResizer Blog`,
     description: post.seoDescription || post.excerpt,
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
   }
 }
 
