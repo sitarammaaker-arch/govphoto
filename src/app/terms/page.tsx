@@ -4,6 +4,9 @@ import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'Terms of Use | SignResizer',
+  alternates: {
+    canonical: '/terms',
+  },
 };
 
 export default function Terms() {
