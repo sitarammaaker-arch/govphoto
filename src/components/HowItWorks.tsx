@@ -66,7 +66,7 @@ export default function HowItWorks() {
           <div>
             <p className="font-semibold text-slate-800 mb-1">Your Privacy is Protected</p>
             <p className="text-sm text-slate-500">
-              Images are processed entirely in memory on our servers. <strong>We never store, save, or share your photos.</strong> Every image is permanently deleted immediately after processing. Zero data retention.
+              Images are processed entirely inside your browser, using your own device. <strong>Your photo never leaves your device — we never see it, store it, or have access to it.</strong> There is no upload, no server, and zero data retention by design.
             </p>
           </div>
         </div>
