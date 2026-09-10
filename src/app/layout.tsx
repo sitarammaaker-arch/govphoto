@@ -10,8 +10,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.signresizer.com'),
   title: 'SignResizer — Free Photo & Signature Resizer for Govt Forms',
   description: 'Resize photo to 20KB–50KB and signature to 10KB–20KB for SSC, UPSC, Railway, Banking and all Indian government exam forms. Free, instant, no registration.',
+  alternates: {
+    canonical: '/',
+  },
   keywords: [
     'government job photo resize', 'SSC photo size', 'UPSC photo size',
     'railway exam photo', 'signature resize', 'photo 20kb', 'photo 50kb',
@@ -64,7 +68,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="canonical" href="https://www.signresizer.com" />
       </head>
       <body className="font-body bg-slate-50 text-slate-800 antialiased">
         {children}
