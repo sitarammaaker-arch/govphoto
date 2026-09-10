@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import AdUnit from './AdUnit';
+import { processImage } from '@/lib/clientImageProcessor';
 
 type Preset = {
   id: string; label: string; description: string;
@@ -85,27 +86,31 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
     if (!originalFile) { setError('Please upload an image first.'); return; }
     setIsProcessing(true); setError(null);
     try {
-      const fd = new FormData();
-      fd.append('image', originalFile);
-      fd.append('preset', selectedPreset);
-      fd.append('customMinKB', customMinKB);
-      fd.append('customMaxKB', customMaxKB);
-      fd.append('customWidth', customWidth);
-      fd.append('customHeight', customHeight);
-      fd.append('outputFormat', outputFormat);
-      fd.append('whiteBg', enableWhiteBg.toString());
-      fd.append('trimSignature', enableTrim.toString());
-      fd.append('dpi300', dpi300.toString());
+      const presets: Record<string, { targetMinKB: number; targetMaxKB: number; width?: number; height?: number; whiteBg?: boolean; trimSignature?: boolean }> = {
+        ssc_photo:     { targetMinKB: 20, targetMaxKB: 50,  whiteBg: true },
+        ssc_signature: { targetMinKB: 10, targetMaxKB: 20,  trimSignature: true },
+        passport:      { targetMinKB: 20, targetMaxKB: 50,  width: 413, height: 531, whiteBg: true },
+        upsc_photo:    { targetMinKB: 20, targetMaxKB: 300, width: 200, height: 230, whiteBg: true },
+        railway_photo: { targetMinKB: 20, targetMaxKB: 50,  whiteBg: true },
+        banking_photo: { targetMinKB: 20, targetMaxKB: 50,  whiteBg: true },
+        custom: {
+          targetMinKB: parseInt(customMinKB) || 10,
+          targetMaxKB: parseInt(customMaxKB) || 100,
+          width:  parseInt(customWidth)  > 0 ? parseInt(customWidth)  : undefined,
+          height: parseInt(customHeight) > 0 ? parseInt(customHeight) : undefined,
+          whiteBg: enableWhiteBg,
+          trimSignature: enableTrim,
+        },
+      };
 
-      const res = await fetch('/api/resize', { method: 'POST', body: fd });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: 'Processing failed' }));
-        throw new Error(err.error || 'Processing failed');
-      }
+      const selected = presets[selectedPreset] || presets.ssc_photo;
 
-      const acceptHeader = res.headers.get('X-Acceptability');
-      const acc: AcceptabilityResult = acceptHeader ? JSON.parse(acceptHeader) : null;
-      const blob = await res.blob();
+      const { blob, acceptability: acc } = await processImage(originalFile, {
+        ...selected,
+        dpi: dpi300 ? 300 : 96,
+        outputFormat,
+      });
+
       if (prevResultRef.current) URL.revokeObjectURL(prevResultRef.current);
       const resultUrl = URL.createObjectURL(blob);
       prevResultRef.current = resultUrl;
