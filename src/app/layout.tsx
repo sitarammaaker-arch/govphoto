@@ -63,8 +63,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'AW-18001608633');
+    gtag('config', 'G-KC96GXG9E2');
   `}} />
-  
+
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
