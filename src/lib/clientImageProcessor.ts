@@ -14,6 +14,11 @@
  *
  * Nothing here talks to a server — everything runs in the browser via
  * Canvas2D. No image ever leaves the visitor's device.
+ *
+ * Built entirely on OffscreenCanvas (rather than HTMLCanvasElement) so this
+ * exact module can run either on the main thread or inside a Web Worker —
+ * see processImageInWorker.ts, which runs this in a worker to keep the
+ * (up to 12-iteration) compression loop off the main thread and protect INP.
  */
 
 export interface ResizeOptions {
@@ -49,28 +54,19 @@ const WHITE_DETECT_THRESHOLD = 240;
 
 // ── Small utilities ─────────────────────────────────────────────────────
 
-function canvasToBlob(canvas: HTMLCanvasElement, mime: string, quality?: number): Promise<Blob> {
-  return new Promise((resolve, reject) => {
-    canvas.toBlob(
-      (blob) => (blob ? resolve(blob) : reject(new Error('canvas.toBlob returned null'))),
-      mime,
-      quality
-    );
-  });
+async function canvasToBlob(canvas: OffscreenCanvas, mime: string, quality?: number): Promise<Blob> {
+  return canvas.convertToBlob(quality === undefined ? { type: mime } : { type: mime, quality });
 }
 
 async function blobToArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
   return blob.arrayBuffer();
 }
 
-function makeCanvas(width: number, height: number): HTMLCanvasElement {
-  const c = document.createElement('canvas');
-  c.width = Math.max(1, Math.round(width));
-  c.height = Math.max(1, Math.round(height));
-  return c;
+function makeCanvas(width: number, height: number): OffscreenCanvas {
+  return new OffscreenCanvas(Math.max(1, Math.round(width)), Math.max(1, Math.round(height)));
 }
 
-function getCtx(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
+function getCtx(canvas: OffscreenCanvas): OffscreenCanvasRenderingContext2D {
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (!ctx) throw new Error('2D canvas context unavailable');
   return ctx;
@@ -78,7 +74,7 @@ function getCtx(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
 
 // ── Decode ───────────────────────────────────────────────────────────────
 
-async function decodeToCanvas(file: File | Blob): Promise<HTMLCanvasElement> {
+async function decodeToCanvas(file: File | Blob): Promise<OffscreenCanvas> {
   // createImageBitmap avoids the extra <img> decode round-trip and honours
   // EXIF orientation the same way the browser's native decoder does.
   const bitmap = await createImageBitmap(file);
@@ -94,7 +90,7 @@ async function decodeToCanvas(file: File | Blob): Promise<HTMLCanvasElement> {
 // find the bounding box of all pixels that differ from the background
 // by more than `threshold` on any channel, and crop to it.
 
-function trimToBoundingBox(canvas: HTMLCanvasElement, threshold = TRIM_THRESHOLD): HTMLCanvasElement {
+function trimToBoundingBox(canvas: OffscreenCanvas, threshold = TRIM_THRESHOLD): OffscreenCanvas {
   const { width, height } = canvas;
   const ctx = getCtx(canvas);
   const { data } = ctx.getImageData(0, 0, width, height);
@@ -131,7 +127,7 @@ function trimToBoundingBox(canvas: HTMLCanvasElement, threshold = TRIM_THRESHOLD
 
 // ── Flatten transparency onto white ─────────────────────────────────────
 
-function flattenOnWhite(canvas: HTMLCanvasElement): HTMLCanvasElement {
+function flattenOnWhite(canvas: OffscreenCanvas): OffscreenCanvas {
   const out = makeCanvas(canvas.width, canvas.height);
   const ctx = getCtx(out);
   ctx.fillStyle = '#ffffff';
@@ -140,7 +136,7 @@ function flattenOnWhite(canvas: HTMLCanvasElement): HTMLCanvasElement {
   return out;
 }
 
-function hasAlphaChannel(canvas: HTMLCanvasElement): boolean {
+function hasAlphaChannel(canvas: OffscreenCanvas): boolean {
   const ctx = getCtx(canvas);
   const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
   for (let i = 3; i < data.length; i += 4) {
@@ -154,7 +150,7 @@ function hasAlphaChannel(canvas: HTMLCanvasElement): boolean {
 // only one given      -> 'inside' (scale preserving aspect to fit within the bound)
 // neither given        -> no-op
 
-function resizeCanvas(canvas: HTMLCanvasElement, width?: number, height?: number): HTMLCanvasElement {
+function resizeCanvas(canvas: OffscreenCanvas, width?: number, height?: number): OffscreenCanvas {
   if (!width && !height) return canvas;
 
   let targetW: number;
@@ -328,7 +324,7 @@ async function applyDensity(blob: Blob, format: string, dpi: number): Promise<Bl
 // ── White-background detection on the final output ─────────────────────
 // Same 8-point corner/edge sample as the old server code.
 
-function detectWhiteBackground(canvas: HTMLCanvasElement): boolean {
+function detectWhiteBackground(canvas: OffscreenCanvas): boolean {
   const sample = makeCanvas(100, 100);
   const sctx = getCtx(sample);
   sctx.fillStyle = '#ffffff';
@@ -357,14 +353,14 @@ const MIME_MAP: Record<string, string> = {
   jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', pdf: 'image/jpeg',
 };
 
-async function encodeAt(canvas: HTMLCanvasElement, format: string, quality: number): Promise<Blob> {
+async function encodeAt(canvas: OffscreenCanvas, format: string, quality: number): Promise<Blob> {
   const mime = MIME_MAP[format] || 'image/jpeg';
   if (format === 'png') return canvasToBlob(canvas, mime); // PNG is lossless; no quality knob
   return canvasToBlob(canvas, mime, quality / 100);
 }
 
 async function compressToTargetSize(
-  canvas: HTMLCanvasElement,
+  canvas: OffscreenCanvas,
   format: string,
   targetMinKB: number,
   targetMaxKB: number
