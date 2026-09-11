@@ -5,6 +5,9 @@ import Footer from '@/components/Footer';
 export const metadata: Metadata = {
   title: 'Disclaimer | SignResizer',
   description: 'Disclaimer for SignResizer — important information about usage.',
+  alternates: {
+    canonical: '/disclaimer',
+  },
 };
 
 export default function Disclaimer() {

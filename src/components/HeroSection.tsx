@@ -77,7 +77,7 @@ export default function HeroSection() {
         <ul className="mt-8 flex flex-wrap justify-center gap-5 text-sky-200 text-sm list-none p-0">
           {[
             ['✓', '100% Free'],
-            ['✓', 'No Image Storage'],
+            ['✓', '100% On-Device'],
             ['✓', 'Instant Download'],
             ['✓', 'JPG Output'],
           ].map(([icon, label]) => (

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import AdUnit from './AdUnit';
-import { processImage } from '@/lib/clientImageProcessor';
+import { processImageOffMainThread } from '@/lib/processImageOffMainThread';
 
 type Preset = {
   id: string; label: string; description: string;
@@ -105,7 +105,7 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
 
       const selected = presets[selectedPreset] || presets.ssc_photo;
 
-      const { blob, acceptability: acc } = await processImage(originalFile, {
+      const { blob, acceptability: acc } = await processImageOffMainThread(originalFile, {
         ...selected,
         dpi: dpi300 ? 300 : 96,
         outputFormat,

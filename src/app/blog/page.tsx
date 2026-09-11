@@ -5,6 +5,9 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Blog — Photo & Signature Tips for Govt Job Forms | SignResizer',
   description: 'Learn about photo and signature size requirements for SSC, UPSC, Railway, Banking and all Indian government exams.',
+  alternates: {
+    canonical: '/blog',
+  },
 }
 
 export const revalidate = 60

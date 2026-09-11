@@ -14,7 +14,7 @@ const faqs = [
   { q: 'What photo format is required for UPSC application?',
     a: 'UPSC requires JPEG/JPG format with file size between 20KB to 300KB. Dimensions should be 200×230 pixels with a plain white or off-white background. Our UPSC preset handles all these requirements automatically.' },
   { q: 'Is this tool free to use?',
-    a: 'Yes, SignResizer is completely free to use. No registration, login, or payment required. Your images are processed securely in memory and are never stored on our servers.' },
+    a: 'Yes, SignResizer is completely free to use. No registration, login, or payment required. Your images are processed 100% in your browser — they are never uploaded to any server, so there is nothing to store.' },
   { q: 'What is passport size photo dimensions in pixels?',
     a: 'Passport size photo dimensions are 3.5cm × 4.5cm, which is approximately 413×531 pixels at 300 DPI or 200×230 pixels at standard screen resolution. Our tool can output the exact required pixel dimensions.' },
   { q: 'Can I convert PNG to JPG for government forms?',
@@ -22,7 +22,7 @@ const faqs = [
   { q: 'My photo is too large (above 50KB), how to reduce it?',
     a: 'Simply upload your photo, select the appropriate preset (e.g., SSC Photo for 20–50KB), and click Resize. Our algorithm uses smart compression to bring the file size down to the required range without significantly affecting image quality.' },
   { q: 'Does the tool store my photos?',
-    a: 'No. Your photos are processed entirely in server memory and deleted immediately after processing. We do not store, save, or share any images you upload. This is a zero data retention system.' },
+    a: 'No. Your photos never leave your device — all resizing and compression happens directly inside your browser. Nothing is ever uploaded, stored, or transmitted to any server. It is one of the most private ways to resize a photo online.' },
   { q: 'What if my exam has a different size requirement?',
     a: 'Use the "Custom Size" preset! Enter your required minimum and maximum KB values, and the tool will compress your image to fit exactly within that range.' },
 ];

@@ -22,7 +22,7 @@ export default function Footer() {
               India's fastest free photo & signature resizer for government job forms. Supports SSC, UPSC, Railway, Banking, and all major exam requirements.
             </p>
             <div className="flex gap-3">
-              <span className="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-full">🔒 No Storage</span>
+              <span className="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-full">🔒 100% On-Device</span>
               <span className="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-full">✅ Free Forever</span>
               <span className="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-full">🇮🇳 Made for India</span>
             </div>
