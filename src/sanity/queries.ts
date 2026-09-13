@@ -14,7 +14,7 @@ export interface Post {
 
 export async function getAllPosts(): Promise<Post[]> {
   return client.fetch(
-    `*[_type == "post"] | order(publishedAt desc) {
+        `*[_type == "post" && publishedAt <= now()] | order(publishedAt desc) {
       _id, title, slug, excerpt, publishedAt, coverImage, seoTitle, seoDescription
     }`
   )
@@ -22,7 +22,7 @@ export async function getAllPosts(): Promise<Post[]> {
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   return client.fetch(
-    `*[_type == "post" && slug.current == $slug][0] {
+        `*[_type == "post" && slug.current == $slug && publishedAt <= now()][0] {
       _id, title, slug, excerpt, publishedAt, body, coverImage, seoTitle, seoDescription
     }`,
     { slug }
