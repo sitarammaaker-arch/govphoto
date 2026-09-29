@@ -54,6 +54,8 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const adsensePublisherId = process.env.NEXT_PUBLIC_ADSENSE_ID;
+
   return (
     <html lang="en" className={inter.variable}>
       <head>
@@ -65,6 +67,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     gtag('config', 'AW-18001608633');
     gtag('config', 'G-KC96GXG9E2');
   `}} />
+
+        {adsensePublisherId && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsensePublisherId}`}
+            crossOrigin="anonymous"
+          />
+        )}
 
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
