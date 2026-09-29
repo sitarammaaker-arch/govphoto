@@ -27,10 +27,10 @@ function SectionSkeleton({ height }: { height: number }) {
 }
 
 const AD_SLOTS = {
-  topBanner:   '1111111111',
-  postResult:  '2222222222',
-  midContent:  '3333333333',
-  aboveFooter: '4444444444',
+  topBanner:   '1922922841',
+  postResult:  '2481151032',
+  midContent:  '6471618506',
+  aboveFooter: '6224206492',
 } as const;
 
 const webAppSchema = {
