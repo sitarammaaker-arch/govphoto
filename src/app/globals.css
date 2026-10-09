@@ -309,3 +309,42 @@ details.faq-item .faq-answer {
     min-height: 200px;
   }
 }
+
+/* ── Placement: Mid-article (inside blog post body) ─────────────────────
+   Native "in-article" fluid ad, inserted at the midpoint of long posts.
+   Height is layout-dependent (Google renders it natively), so reserve a
+   conservative minimum to avoid a large CLS jump on fill. */
+.ad-mid-article {
+  margin: 2rem 0;
+  max-width: 100%;
+}
+
+.ad-mid-article .adsbygoogle {
+  min-height: 280px;
+}
+
+@media (max-width: 767px) {
+  .ad-mid-article .adsbygoogle {
+    min-height: 220px;
+  }
+}
+
+/* ── Placement: End of article (before the "Resize Photo" CTA) ─────────
+   Responsive rectangle, centered, same pattern as ad-above-footer. */
+.ad-end-article {
+  max-width: 100%;
+  margin: 8px auto 0;
+  padding: 0 0 8px;
+}
+
+.ad-end-article .adsbygoogle {
+  min-height: 250px;
+  max-width: 336px;
+  margin: 0 auto;
+}
+
+@media (max-width: 400px) {
+  .ad-end-article .adsbygoogle {
+    min-height: 200px;
+  }
+}
