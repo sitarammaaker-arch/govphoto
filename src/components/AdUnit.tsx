@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-type AdFormat = 'horizontal' | 'rectangle' | 'vertical' | 'auto';
+type AdFormat = 'horizontal' | 'rectangle' | 'vertical' | 'auto' | 'in-article';
 
 interface AdUnitProps {
   slot: string;
@@ -64,10 +64,13 @@ export default function AdUnit({
       <ins
         ref={insRef}
         className="adsbygoogle"
-        style={{ display: 'block' }}
+        style={{ display: 'block', textAlign: format === 'in-article' ? 'center' : undefined }}
         data-ad-client={publisherId}
         data-ad-slot={slot}
-        data-ad-format={format === 'auto' ? 'auto' : undefined}
+        data-ad-layout={format === 'in-article' ? 'in-article' : undefined}
+        data-ad-format={
+          format === 'in-article' ? 'fluid' : format === 'auto' ? 'auto' : undefined
+        }
         data-full-width-responsive={
           format === 'auto' || format === 'horizontal' ? 'true' : undefined
         }
