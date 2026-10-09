@@ -3,8 +3,18 @@ import Link from 'next/link'
 import { getPostBySlug, getAllPosts } from '@/sanity/queries'
 import type { Metadata } from 'next'
 import { PortableText } from '@portabletext/react'
+import AdUnit from '@/components/AdUnit'
 
 export const revalidate = 60
+
+const BLOG_AD_SLOTS = {
+  midArticle: '2041092902',
+  endArticle: '1401041066',
+} as const
+
+// Only insert a mid-article ad when there's enough content on either side
+// of it — short posts just get the end-of-article ad.
+const MIN_BLOCKS_FOR_MID_AD = 6
 
 export async function generateStaticParams() {
   const posts = await getAllPosts()
@@ -57,10 +67,34 @@ export default async function PostPage(
       {/* Content */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
         <article className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-10 max-w-none prose prose-slate prose-lg prose-headings:font-extrabold prose-headings:text-slate-800 prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-slate-100 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-sky-700 prose-p:text-slate-600 prose-p:leading-8 prose-p:mb-4 prose-li:text-slate-600 prose-li:leading-7 prose-ul:my-4 prose-ol:my-4 prose-strong:text-slate-800 prose-strong:font-bold prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline">
-          {post.body && (
-            <PortableText value={post.body as Parameters<typeof PortableText>[0]['value']} />
+          {post.body && post.body.length >= MIN_BLOCKS_FOR_MID_AD ? (
+            <>
+              <PortableText
+                value={post.body.slice(0, Math.ceil(post.body.length / 2)) as Parameters<typeof PortableText>[0]['value']}
+              />
+              <div className="not-prose">
+                <AdUnit
+                  slot={BLOG_AD_SLOTS.midArticle}
+                  format="in-article"
+                  className="ad-mid-article"
+                />
+              </div>
+              <PortableText
+                value={post.body.slice(Math.ceil(post.body.length / 2)) as Parameters<typeof PortableText>[0]['value']}
+              />
+            </>
+          ) : (
+            post.body && (
+              <PortableText value={post.body as Parameters<typeof PortableText>[0]['value']} />
+            )
           )}
         </article>
+
+        <AdUnit
+          slot={BLOG_AD_SLOTS.endArticle}
+          format="rectangle"
+          className="ad-end-article"
+        />
 
         {/* CTA */}
         <div className="mt-8 bg-sky-50 border border-sky-100 rounded-2xl p-6 text-center">
