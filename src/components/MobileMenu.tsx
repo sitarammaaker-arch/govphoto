@@ -26,11 +26,12 @@ export default function MobileMenu() {
 
       {open && (
         <div className="md:hidden absolute top-16 inset-x-0 bg-white border-t border-slate-100 px-4 py-4 space-y-3 shadow-lg z-40">
-          <a href="#tool"         className="block py-2 text-slate-700 font-medium hover:text-sky-600" onClick={close}>Resize Tool</a>
-          <a href="#how-it-works" className="block py-2 text-slate-700 font-medium hover:text-sky-600" onClick={close}>How It Works</a>
-          <a href="#exams"        className="block py-2 text-slate-700 font-medium hover:text-sky-600" onClick={close}>Exam Guide</a>
-          <a href="#faq"          className="block py-2 text-slate-700 font-medium hover:text-sky-600" onClick={close}>FAQ</a>
-          <a href="#tool"         className="block w-full text-center bg-sky-500 text-white px-4 py-2.5 rounded-lg font-semibold" onClick={close}>Resize Now →</a>
+          <a href="/#tool"         className="block py-2 text-slate-700 font-medium hover:text-sky-600" onClick={close}>Resize Tool</a>
+          <a href="/#how-it-works" className="block py-2 text-slate-700 font-medium hover:text-sky-600" onClick={close}>How It Works</a>
+          <a href="/#exams"        className="block py-2 text-slate-700 font-medium hover:text-sky-600" onClick={close}>Exam Guide</a>
+          <a href="/#faq"          className="block py-2 text-slate-700 font-medium hover:text-sky-600" onClick={close}>FAQ</a>
+          <a href="/blog"          className="block py-2 text-slate-700 font-medium hover:text-sky-600" onClick={close}>Blog</a>
+          <a href="/#tool"         className="block w-full text-center bg-sky-500 text-white px-4 py-2.5 rounded-lg font-semibold" onClick={close}>Resize Now →</a>
         </div>
       )}
     </>

@@ -1,12 +1,33 @@
 import Link from 'next/link'
 import { getAllPosts } from '@/sanity/queries'
 import type { Metadata } from 'next'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import { SITE_URL, SITE_NAME, OG_IMAGE } from '@/lib/site'
+
+const BLOG_TITLE = 'Blog — Photo & Signature Tips for Govt Job Forms | SignResizer'
+const BLOG_DESCRIPTION = 'Learn about photo and signature size requirements for SSC, UPSC, Railway, Banking and all Indian government exams.'
 
 export const metadata: Metadata = {
-  title: 'Blog — Photo & Signature Tips for Govt Job Forms | SignResizer',
-  description: 'Learn about photo and signature size requirements for SSC, UPSC, Railway, Banking and all Indian government exams.',
+  title: BLOG_TITLE,
+  description: BLOG_DESCRIPTION,
   alternates: {
     canonical: '/blog',
+  },
+  // Without these, /blog inherits the homepage's Open Graph tags and og:url.
+  openGraph: {
+    title: BLOG_TITLE,
+    description: BLOG_DESCRIPTION,
+    url: `${SITE_URL}/blog`,
+    type: 'website',
+    locale: 'en_IN',
+    siteName: SITE_NAME,
+    images: [{ url: OG_IMAGE, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: BLOG_TITLE,
+    description: BLOG_DESCRIPTION,
   },
 }
 
@@ -16,11 +37,13 @@ export default async function BlogPage() {
   const posts = await getAllPosts()
 
   return (
+    <>
+    <Header />
     <main className="min-h-screen bg-slate-50">
       {/* Header */}
       <div className="bg-white border-b border-slate-100 py-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <Link href="/" className="text-sky-600 text-sm font-medium hover:underline mb-4 inline-block">
+          <Link href="/" className="text-sky-700 text-sm font-medium hover:underline mb-4 inline-block">
             ← Back to SignResizer
           </Link>
           <h1 className="text-3xl font-bold text-slate-800 mt-2">Blog</h1>
@@ -74,5 +97,7 @@ export default async function BlogPage() {
         </div>
       </div>
     </main>
+    <Footer />
+    </>
   )
 }

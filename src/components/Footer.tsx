@@ -32,10 +32,11 @@ export default function Footer() {
           <div>
             <h2 className="font-semibold text-white mb-4">Quick Links</h2>
             <ul className="space-y-2 text-sm">
-              <li><a href="#tool" className="hover:text-sky-400 transition-colors">Resize Tool</a></li>
-              <li><a href="#exams" className="hover:text-sky-400 transition-colors">Exam Requirements</a></li>
-              <li><a href="#how-it-works" className="hover:text-sky-400 transition-colors">How It Works</a></li>
-              <li><a href="#faq" className="hover:text-sky-400 transition-colors">FAQ</a></li>
+              <li><a href="/#tool" className="hover:text-sky-400 transition-colors">Resize Tool</a></li>
+              <li><a href="/#exams" className="hover:text-sky-400 transition-colors">Exam Requirements</a></li>
+              <li><a href="/#how-it-works" className="hover:text-sky-400 transition-colors">How It Works</a></li>
+              <li><a href="/#faq" className="hover:text-sky-400 transition-colors">FAQ</a></li>
+              <li><a href="/blog" className="hover:text-sky-400 transition-colors">Blog</a></li>
             </ul>
           </div>
 
