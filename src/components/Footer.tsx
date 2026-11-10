@@ -30,7 +30,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-white mb-4">Quick Links</h4>
+            <h2 className="font-semibold text-white mb-4">Quick Links</h2>
             <ul className="space-y-2 text-sm">
               <li><a href="#tool" className="hover:text-sky-400 transition-colors">Resize Tool</a></li>
               <li><a href="#exams" className="hover:text-sky-400 transition-colors">Exam Requirements</a></li>
@@ -41,7 +41,7 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="font-semibold text-white mb-4">Legal & Support</h4>
+            <h2 className="font-semibold text-white mb-4">Legal & Support</h2>
             <ul className="space-y-2 text-sm">
               <li><a href="/privacy-policy" className="hover:text-sky-400 transition-colors">Privacy Policy</a></li>
               <li><a href="/disclaimer" className="hover:text-sky-400 transition-colors">Disclaimer</a></li>

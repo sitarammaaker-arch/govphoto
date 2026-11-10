@@ -17,7 +17,7 @@ export default function Header() {
           </div>
           <div>
             <span className="font-bold text-sky-700 text-lg leading-none block">Sign</span>
-            <span className="text-xs text-slate-400 leading-none">Resizer</span>
+            <span className="text-xs text-slate-500 leading-none">Resizer</span>
           </div>
         </Link>
 

@@ -57,7 +57,7 @@ export default function AdUnit({
   if (!publisherId) return null;
 
   return (
-    <div className={`ad-unit-wrapper ${className}`} aria-label="Advertisement">
+    <aside className={`ad-unit-wrapper ${className}`} aria-label="Advertisement">
       {label && (
         <p className="ad-label" aria-hidden="true">Advertisement</p>
       )}
@@ -75,6 +75,6 @@ export default function AdUnit({
           format === 'auto' || format === 'horizontal' ? 'true' : undefined
         }
       />
-    </div>
+    </aside>
   );
 }

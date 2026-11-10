@@ -1,13 +1,7 @@
 import type { Metadata } from 'next';
 import React from 'react';
-import { Inter } from 'next/font/google';
 import './globals.css';
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-body',
-  display: 'swap',
-});
+import DeferredThirdParty from '@/components/DeferredThirdParty';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.signresizer.com'),
@@ -46,7 +40,6 @@ export const metadata: Metadata = {
       { url: '/favicon.ico' },
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon.svg', type: 'image/svg+xml' },
     ],
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
   },
@@ -57,10 +50,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const adsensePublisherId = process.env.NEXT_PUBLIC_ADSENSE_ID;
 
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en">
       <head>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18001608633"></script>
-  <script dangerouslySetInnerHTML={{ __html: `
+        {/* gtag stub only — the library itself is loaded after first paint by
+            <DeferredThirdParty>; calls queue in dataLayer until then. */}
+        <script dangerouslySetInnerHTML={{ __html: `
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
@@ -68,20 +62,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     gtag('config', 'G-KC96GXG9E2');
   `}} />
 
-        {adsensePublisherId && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsensePublisherId}`}
-            crossOrigin="anonymous"
-          />
-        )}
-
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body className="font-body bg-slate-50 text-slate-800 antialiased">
         {children}
+        <DeferredThirdParty adsenseId={adsensePublisherId} />
       </body>
     </html>
   );

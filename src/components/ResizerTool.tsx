@@ -219,8 +219,8 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
                 </svg>
               </div>
               <div>
-                <p className="font-semibold text-slate-700">Drop image here or <span className="text-sky-600 underline">browse</span></p>
-                <p className="text-sm text-slate-400 mt-1">JPG, JPEG, PNG • Max 5MB</p>
+                <p className="font-semibold text-slate-700">Drop image here or <span className="text-sky-700 underline">browse</span></p>
+                <p className="text-sm text-slate-500 mt-1">JPG, JPEG, PNG • Max 5MB</p>
               </div>
             </div>
           )}
