@@ -174,19 +174,19 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
     <div className="space-y-6">
 {/* ── Step 1: Upload ── */}
       <div className="card p-5 sm:p-6">
-        <h2 className="text-xl font-bold text-slate-800 mb-1 flex items-center gap-2">
-          <span className="w-7 h-7 rounded-full bg-sky-500 text-white text-sm flex items-center justify-center font-bold">1</span>
+        <h2 className="text-xl font-bold text-text mb-1 flex items-center gap-2">
+          <span className="w-7 h-7 rounded-full bg-primary text-on-primary text-sm flex items-center justify-center font-bold">1</span>
           Upload Image
         </h2>
-        <p className="text-slate-500 text-sm mb-4">Drag &amp; drop or click to select. JPG/PNG, max 5MB.</p>
+        <p className="text-muted text-sm mb-4">Drag &amp; drop or click to select. JPG/PNG, max 5MB.</p>
 
         <div
           onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}
           onClick={() => !originalFile && fileInputRef.current?.click()}
           className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-colors duration-200
-            ${isDragging ? 'border-sky-400 bg-sky-50' : originalFile
-              ? 'border-green-300 bg-green-50 cursor-default'
-              : 'border-slate-300 hover:border-sky-400 hover:bg-sky-50 cursor-pointer'}`}
+            ${isDragging ? 'border-primary bg-primary-soft' : originalFile
+              ? 'border-success bg-success-soft cursor-default'
+              : 'border-strong hover:border-primary hover:bg-primary-soft cursor-pointer'}`}
         >
           <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png"
             onChange={handleFileInput} className="hidden" />
@@ -194,40 +194,40 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
           {originalFile ? (
             <div className="space-y-3">
               <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                <div className="w-10 h-10 rounded-full bg-success-soft flex items-center justify-center">
+                  <svg className="w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div className="text-left">
-                  <p className="font-semibold text-slate-800 text-sm">{originalFile.name}</p>
-                  <p className="text-xs text-slate-500">
+                  <p className="font-semibold text-text text-sm">{originalFile.name}</p>
+                  <p className="text-xs text-muted">
                     {originalSizeKB} KB{originalDims ? ` • ${originalDims.w}×${originalDims.h}px` : ''} • {originalFile.type.split('/')[1].toUpperCase()}
                   </p>
                 </div>
               </div>
               <button onClick={(e) => { e.stopPropagation(); handleReset(); }}
-                className="text-xs text-red-500 hover:text-red-700 underline">
+                className="text-xs text-danger hover:text-danger underline">
                 Remove &amp; upload different image
               </button>
             </div>
           ) : (
             <div className="space-y-3">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-sky-50 border-2 border-sky-100 flex items-center justify-center">
-                <svg className="w-7 h-7 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-primary-soft border-2 border-border flex items-center justify-center">
+                <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                 </svg>
               </div>
               <div>
-                <p className="font-semibold text-slate-700">Drop image here or <span className="text-sky-700 underline">browse</span></p>
-                <p className="text-sm text-slate-500 mt-1">JPG, JPEG, PNG • Max 5MB</p>
+                <p className="font-semibold text-text">Drop image here or <span className="text-link underline">browse</span></p>
+                <p className="text-sm text-muted mt-1">JPG, JPEG, PNG • Max 5MB</p>
               </div>
             </div>
           )}
         </div>
 
         {error && (
-          <div role="alert" className="mt-3 flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+          <div role="alert" className="mt-3 flex items-start gap-2 p-3 bg-danger-soft border border-danger rounded-xl text-danger text-sm">
             <svg className="w-5 h-5 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
@@ -240,11 +240,11 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
 
       {/* ── Step 2: Preset ── */}
       <div className="card p-5 sm:p-6">
-        <h2 className="text-xl font-bold text-slate-800 mb-1 flex items-center gap-2">
-          <span className="w-7 h-7 rounded-full bg-sky-500 text-white text-sm flex items-center justify-center font-bold">2</span>
+        <h2 className="text-xl font-bold text-text mb-1 flex items-center gap-2">
+          <span className="w-7 h-7 rounded-full bg-primary text-on-primary text-sm flex items-center justify-center font-bold">2</span>
           Select Preset
         </h2>
-        <p className="text-slate-500 text-sm mb-4">Choose the exam type or set custom size</p>
+        <p className="text-muted text-sm mb-4">Choose the exam type or set custom size</p>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
           {PRESETS.map((preset) => (
@@ -255,49 +255,49 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
               aria-pressed={selectedPreset === preset.id}
             >
               <span className="text-2xl">{preset.icon}</span>
-              <span className="text-xs font-semibold text-slate-700 leading-tight">{preset.label}</span>
-              <span className="text-xs text-sky-600 font-medium">{preset.description}</span>
+              <span className="text-xs font-semibold text-text leading-tight">{preset.label}</span>
+              <span className="text-xs text-link font-medium">{preset.description}</span>
             </button>
           ))}
         </div>
 
         {/* Custom Size Panel */}
         {selectedPreset === 'custom' && (
-          <div className="mt-4 p-4 bg-sky-50 rounded-xl border border-sky-100 space-y-3">
-            <p className="text-sm font-semibold text-sky-800">Custom Size Settings</p>
+          <div className="mt-4 p-4 bg-primary-soft rounded-xl border border-border space-y-3">
+            <p className="text-sm font-semibold text-link">Custom Size Settings</p>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label htmlFor="min-kb" className="text-xs font-medium text-slate-600 block mb-1">Min Size (KB)</label>
+                <label htmlFor="min-kb" className="text-xs font-medium text-muted block mb-1">Min Size (KB)</label>
                 <input id="min-kb" type="number" value={customMinKB} onChange={(e) => setCustomMinKB(e.target.value)}
-                  min="5" max="5000" className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                  min="5" max="5000" className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-focus" />
               </div>
               <div>
-                <label htmlFor="max-kb" className="text-xs font-medium text-slate-600 block mb-1">Max Size (KB)</label>
+                <label htmlFor="max-kb" className="text-xs font-medium text-muted block mb-1">Max Size (KB)</label>
                 <input id="max-kb" type="number" value={customMaxKB} onChange={(e) => setCustomMaxKB(e.target.value)}
-                  min="5" max="5000" className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                  min="5" max="5000" className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-focus" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label htmlFor="custom-width" className="text-xs font-medium text-slate-600 block mb-1">Width (px)</label>
+                <label htmlFor="custom-width" className="text-xs font-medium text-muted block mb-1">Width (px)</label>
                 <input id="custom-width" type="number" value={customWidth} onChange={(e) => setCustomWidth(e.target.value)}
                   min="1" max="5000" placeholder="Optional"
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 placeholder-slate-300" />
+                  className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-focus placeholder-subtle" />
               </div>
               <div>
-                <label htmlFor="custom-height" className="text-xs font-medium text-slate-600 block mb-1">Height (px)</label>
+                <label htmlFor="custom-height" className="text-xs font-medium text-muted block mb-1">Height (px)</label>
                 <input id="custom-height" type="number" value={customHeight} onChange={(e) => setCustomHeight(e.target.value)}
                   min="1" max="5000" placeholder="Optional"
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 placeholder-slate-300" />
+                  className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-focus placeholder-subtle" />
               </div>
             </div>
-            <p className="text-xs text-slate-400">Add width and height for exact dimensions, or keep blank to preserve original ratio.</p>
+            <p className="text-xs text-subtle">Add width and height for exact dimensions, or keep blank to preserve original ratio.</p>
           </div>
         )}
 
         {/* Download Format */}
-        <div className="mt-4 pt-4 border-t border-slate-100">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Download Format</p>
+        <div className="mt-4 pt-4 border-t border-border">
+          <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Download Format</p>
           <div className="flex flex-wrap gap-2">
             {FORMAT_OPTIONS.map((fmt) => (
               <button
@@ -305,8 +305,8 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
                 onClick={() => setOutputFormat(fmt)}
                 className={`px-4 py-1.5 rounded-lg text-sm font-semibold border-2 transition-colors duration-150
                   ${outputFormat === fmt
-                    ? 'bg-sky-500 border-sky-500 text-white'
-                    : 'bg-white border-slate-200 text-slate-600 hover:border-sky-400 hover:text-sky-600'}`}
+                    ? 'bg-primary border-primary text-on-primary'
+                    : 'bg-surface border-border text-muted hover:border-primary hover:text-link'}`}
               >
                 {fmt.toUpperCase()}
               </button>
@@ -315,8 +315,8 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
         </div>
 
         {/* Advanced Options */}
-        <div className="mt-4 pt-4 border-t border-slate-100">
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Advanced Options</p>
+        <div className="mt-4 pt-4 border-t border-border">
+          <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Advanced Options</p>
           <div className="flex flex-wrap gap-4">
             {[
               { id: 'whiteBg', checked: enableWhiteBg, set: setEnableWhiteBg, label: 'White Background' },
@@ -325,8 +325,8 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
             ].map(({ id, checked, set, label }) => (
               <label key={id} className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" id={id} checked={checked} onChange={(e) => set(e.target.checked)}
-                  className="w-4 h-4 rounded text-sky-500 border-slate-300 focus:ring-sky-400" />
-                <span className="text-sm text-slate-700">{label}</span>
+                  className="w-4 h-4 rounded text-link border-strong focus:ring-focus" />
+                <span className="text-sm text-text">{label}</span>
               </label>
             ))}
           </div>
@@ -337,16 +337,16 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
       {/* ── Step 3: Preview & Download ── */}
       {(originalPreview || resultImage) && (
         <div className="card p-5 sm:p-6">
-          <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-            <span className="w-7 h-7 rounded-full bg-sky-500 text-white text-sm flex items-center justify-center font-bold">3</span>
+          <h2 className="text-xl font-bold text-text mb-4 flex items-center gap-2">
+            <span className="w-7 h-7 rounded-full bg-primary text-on-primary text-sm flex items-center justify-center font-bold">3</span>
             Preview &amp; Download
           </h2>
 <button
           onClick={handleResize} disabled={!originalFile || isProcessing}
           className={`mt-4 w-full flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-base transition-colors duration-200
             ${!originalFile || isProcessing
-              ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-              : 'bg-sky-500 hover:bg-sky-600 text-white shadow-md active:scale-[0.98]'}`}
+              ? 'bg-surface-muted text-subtle cursor-not-allowed'
+              : 'bg-primary hover:bg-primary-hover text-on-primary shadow-md active:scale-[0.98]'}`}
         >
           {isProcessing ? (
             <><div className="spinner" />Processing Image...</>
@@ -364,8 +364,8 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {originalPreview && (
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Original</p>
-                <div className="bg-slate-100 rounded-xl overflow-hidden border border-slate-200" style={{ aspectRatio: '1/1' }}>
+                <p className="text-xs font-semibold text-muted uppercase tracking-wider">Original</p>
+                <div className="bg-surface-muted rounded-xl overflow-hidden border border-border" style={{ aspectRatio: '1/1' }}>
                   <img src={originalPreview} alt="Original" className="w-full h-full object-contain" width={300} height={300} decoding="async" />
                 </div>
                 <div className="flex gap-2 flex-wrap text-xs">
@@ -378,8 +378,8 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
 
             {resultImage && acceptability ? (
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Resized Output</p>
-                <div className="bg-slate-100 rounded-xl overflow-hidden border border-slate-200" style={{ aspectRatio: '1/1' }}>
+                <p className="text-xs font-semibold text-muted uppercase tracking-wider">Resized Output</p>
+                <div className="bg-surface-muted rounded-xl overflow-hidden border border-border" style={{ aspectRatio: '1/1' }}>
                   <img src={resultImage} alt="Resized" className="w-full h-full object-contain" width={300} height={300} decoding="async" />
                 </div>
                 <div className="flex gap-2 flex-wrap text-xs">
@@ -390,11 +390,11 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
               </div>
             ) : isProcessing ? (
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Processing…</p>
-                <div className="bg-slate-100 rounded-xl border border-slate-200 flex items-center justify-center" style={{ aspectRatio: '1/1' }}>
+                <p className="text-xs font-semibold text-muted uppercase tracking-wider">Processing…</p>
+                <div className="bg-surface-muted rounded-xl border border-border flex items-center justify-center" style={{ aspectRatio: '1/1' }}>
                   <div className="text-center space-y-3">
-                    <div className="w-10 h-10 border-4 border-sky-200 border-t-sky-500 rounded-full mx-auto" style={{ animation: 'spin 0.7s linear infinite' }} />
-                    <p className="text-sm text-slate-500">Compressing image…</p>
+                    <div className="w-10 h-10 border-4 border-border border-t-sky-500 rounded-full mx-auto" style={{ animation: 'spin 0.7s linear infinite' }} />
+                    <p className="text-sm text-muted">Compressing image…</p>
                   </div>
                 </div>
               </div>
@@ -402,8 +402,8 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
           </div>
 
           {acceptability && (
-            <div className="mt-5 p-4 bg-slate-50 rounded-xl border border-slate-100">
-              <p className="text-sm font-bold text-slate-700 mb-3">Acceptability Check</p>
+            <div className="mt-5 p-4 bg-bg rounded-xl border border-border">
+              <p className="text-sm font-bold text-text mb-3">Acceptability Check</p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <CheckItem ok={acceptability.sizeOK}    label="File Size"   detail={`${acceptability.finalSizeKB} KB (${acceptability.targetMinKB}–${acceptability.targetMaxKB} KB)`} />
                 <CheckItem ok={acceptability.formatOK}  label="Format"      detail={outputFormat.toUpperCase()} />
@@ -415,7 +415,7 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
 
           {resultImage && (
             <button onClick={handleDownload}
-              className="mt-4 w-full flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-base bg-green-500 hover:bg-green-600 text-white shadow-md transition-colors duration-200 active:scale-[0.98]">
+              className="mt-4 w-full flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-base bg-success hover:bg-success-hover text-on-success shadow-md transition-colors duration-200 active:scale-[0.98]">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
@@ -437,7 +437,7 @@ export default function ResizerTool({ postResultAdSlot }: ResizerToolProps = {})
 function Pill({ children, green }: { children: React.ReactNode; green?: boolean }) {
   return (
     <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs
-      ${green ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-slate-100 text-slate-600'}`}>
+      ${green ? 'bg-success-soft text-success border border-success-soft' : 'bg-surface-muted text-muted'}`}>
       {children}
     </span>
   );
@@ -449,21 +449,20 @@ function CheckItem({ ok, label, detail, warning = false }: {
   const isWarning = !ok && warning;
   return (
     <div className={`flex flex-col gap-1 p-3 rounded-lg border
-      ${ok ? 'bg-green-50 border-green-100' : isWarning ? 'bg-amber-50 border-amber-100' : 'bg-red-50 border-red-100'}`}>
+      ${ok ? 'bg-success-soft border-success-soft' : isWarning ? 'bg-warning-soft border-warning-soft' : 'bg-danger-soft border-danger-soft'}`}>
       <div className="flex items-center gap-1.5">
         {ok ? (
-          <svg className="w-4 h-4 text-green-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <svg className="w-4 h-4 text-success shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
           </svg>
         ) : (
-          <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"
-            style={{ color: isWarning ? '#d97706' : '#dc2626' }}>
+          <svg className={`w-4 h-4 shrink-0 ${isWarning ? 'text-warning' : 'text-danger'}`} fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
         )}
-        <span className={`text-xs font-semibold ${ok ? 'text-green-700' : isWarning ? 'text-amber-700' : 'text-red-700'}`}>{label}</span>
+        <span className={`text-xs font-semibold ${ok ? 'text-success' : isWarning ? 'text-warning' : 'text-danger'}`}>{label}</span>
       </div>
-      <span className={`text-xs ${ok ? 'text-green-600' : isWarning ? 'text-amber-600' : 'text-red-600'}`}>{detail}</span>
+      <span className={`text-xs ${ok ? 'text-success' : isWarning ? 'text-warning' : 'text-danger'}`}>{detail}</span>
     </div>
   );
 }

@@ -8,22 +8,53 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Semantic colours — values live in src/app/globals.css (:root).
       colors: {
-        sky: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+        bg: 'var(--color-bg)',
+        surface: {
+          DEFAULT: 'var(--color-surface)',
+          muted: 'var(--color-surface-muted)',
+          inverse: 'var(--color-surface-inverse)',
         },
+        text: 'var(--color-text)',
+        muted: 'var(--color-text-muted)',
+        subtle: 'var(--color-text-subtle)',
+        inverse: {
+          DEFAULT: 'var(--color-text-inverse)',
+          muted: 'var(--color-text-inverse-muted)',
+        },
+        border: 'var(--color-border)',
+        strong: 'var(--color-border-strong)',
+        primary: {
+          DEFAULT: 'var(--color-primary)',
+          hover: 'var(--color-primary-hover)',
+          soft: 'var(--color-primary-soft)',
+        },
+        'on-primary': 'var(--color-on-primary)',
+        link: 'var(--color-link)',
+        accent: {
+          DEFAULT: 'var(--color-accent)',
+          soft: 'var(--color-accent-soft)',
+        },
+        'on-accent': 'var(--color-on-accent)',
+        success: {
+          DEFAULT: 'var(--color-success)',
+          hover: 'var(--color-success-hover)',
+          soft: 'var(--color-success-soft)',
+        },
+        'on-success': 'var(--color-on-success)',
+        warning: {
+          DEFAULT: 'var(--color-warning)',
+          soft: 'var(--color-warning-soft)',
+        },
+        danger: {
+          DEFAULT: 'var(--color-danger)',
+          soft: 'var(--color-danger-soft)',
+        },
+        focus: 'var(--color-focus)',
       },
       fontFamily: {
-        display: ['var(--font-display)', 'serif'],
+        display: ['var(--font-display)', 'var(--font-body)', 'sans-serif'],
         body: ['var(--font-body)', 'sans-serif'],
       },
       animation: {
@@ -42,8 +73,8 @@ const config: Config = {
           to: { opacity: '1' },
         },
         pulseGlow: {
-          '0%, 100%': { boxShadow: '0 0 0 0 rgba(14, 165, 233, 0.4)' },
-          '50%': { boxShadow: '0 0 0 12px rgba(14, 165, 233, 0)' },
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(11, 99, 182, 0.4)' },
+          '50%': { boxShadow: '0 0 0 12px rgba(11, 99, 182, 0)' },
         },
       },
     },

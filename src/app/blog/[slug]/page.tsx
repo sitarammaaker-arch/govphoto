@@ -138,33 +138,33 @@ export default async function PostPage(
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-slate-50">
+      <main className="min-h-screen bg-bg">
 
         {/* Header */}
-        <div className="bg-white border-b border-slate-100 py-8">
+        <div className="bg-surface border-b border-border py-8">
           <div className="max-w-3xl mx-auto px-4 sm:px-6">
-            <nav aria-label="Breadcrumb" className="text-sm text-slate-500">
-              <Link href="/" className="text-sky-700 font-medium hover:underline">Home</Link>
+            <nav aria-label="Breadcrumb" className="text-sm text-muted">
+              <Link href="/" className="text-link font-medium hover:underline">Home</Link>
               <span aria-hidden="true" className="mx-2">/</span>
-              <Link href="/blog" className="text-sky-700 font-medium hover:underline">Blog</Link>
+              <Link href="/blog" className="text-link font-medium hover:underline">Blog</Link>
             </nav>
-            <p className="text-xs text-slate-500 mt-4">
+            <p className="text-xs text-muted mt-4">
               <time dateTime={post.publishedAt}>
                 {new Date(post.publishedAt).toLocaleDateString('en-IN', {
                   day: 'numeric', month: 'long', year: 'numeric',
                 })}
               </time>
             </p>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mt-2 leading-snug">
+            <h1 className="text-2xl sm:text-3xl font-bold text-text mt-2 leading-snug">
               {post.title}
             </h1>
-            <p className="text-slate-500 mt-3 text-base leading-relaxed">{post.excerpt}</p>
+            <p className="text-muted mt-3 text-base leading-relaxed">{post.excerpt}</p>
           </div>
         </div>
 
         {/* Content */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
-          <article className="bg-white rounded-2xl border border-slate-100 p-6 sm:p-10 max-w-none prose prose-slate prose-lg prose-headings:font-extrabold prose-headings:text-slate-800 prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-slate-100 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-sky-700 prose-p:text-slate-600 prose-p:leading-8 prose-p:mb-4 prose-li:text-slate-600 prose-li:leading-7 prose-ul:my-4 prose-ol:my-4 prose-strong:text-slate-800 prose-strong:font-bold prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline">
+          <article className="bg-surface rounded-2xl border border-border p-6 sm:p-10 max-w-none prose prose-slate prose-lg prose-headings:font-extrabold prose-headings:text-text prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-border prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-link prose-p:text-muted prose-p:leading-8 prose-p:mb-4 prose-li:text-muted prose-li:leading-7 prose-ul:my-4 prose-ol:my-4 prose-strong:text-text prose-strong:font-bold prose-a:text-link prose-a:no-underline hover:prose-a:underline">
             {post.body && post.body.length >= MIN_BLOCKS_FOR_MID_AD ? (
               <>
                 <PortableText
@@ -195,14 +195,14 @@ export default async function PostPage(
           />
 
           {/* CTA */}
-          <div className="mt-8 bg-sky-50 border border-sky-100 rounded-2xl p-6 text-center">
-            <p className="font-bold text-slate-800 mb-1">Ready to resize your photo?</p>
-            <p className="text-sm text-slate-500 mb-4">
+          <div className="mt-8 bg-primary-soft border border-border rounded-2xl p-6 text-center">
+            <p className="font-bold text-text mb-1">Ready to resize your photo?</p>
+            <p className="text-sm text-muted mb-4">
               Use our free tool for SSC, UPSC, Railway and all government exams
             </p>
             <Link
               href="/#tool"
-              className="inline-block bg-sky-500 hover:bg-sky-600 text-white font-bold px-6 py-3 rounded-xl transition-colors"
+              className="inline-block bg-primary hover:bg-primary-hover text-on-primary font-bold px-6 py-3 rounded-xl transition-colors"
             >
               Resize Photo Free →
             </Link>
@@ -212,7 +212,7 @@ export default async function PostPage(
               reach the other exam guides from every post. */}
           {relatedPosts.length > 0 && (
             <section aria-labelledby="related-guides" className="mt-10">
-              <h2 id="related-guides" className="text-xl font-bold text-slate-800 mb-4">
+              <h2 id="related-guides" className="text-xl font-bold text-text mb-4">
                 Related photo &amp; signature guides
               </h2>
               <ul className="grid gap-3 sm:grid-cols-2">
@@ -220,7 +220,7 @@ export default async function PostPage(
                   <li key={related._id}>
                     <Link
                       href={`/blog/${related.slug.current}`}
-                      className="block h-full bg-white rounded-xl border border-slate-100 p-4 text-sm font-semibold text-slate-700 hover:border-sky-200 hover:text-sky-700 transition-colors"
+                      className="block h-full bg-surface rounded-xl border border-border p-4 text-sm font-semibold text-text hover:border-primary hover:text-link transition-colors"
                     >
                       {related.title}
                     </Link>

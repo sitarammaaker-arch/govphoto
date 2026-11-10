@@ -29,7 +29,7 @@ const faqs = [
 
 export default function FAQSection() {
   return (
-    <section id="faq" className="py-14 sm:py-20 bg-white">
+    <section id="faq" className="py-14 sm:py-20 bg-surface">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <h2 className="section-title">Frequently Asked Questions</h2>
@@ -41,7 +41,7 @@ export default function FAQSection() {
           {faqs.map((faq, i) => (
             <details key={i} className="faq-item" {...(i === 0 ? { open: true } : {})}>
               <summary>
-                <h3 className="font-semibold text-slate-800 text-sm sm:text-base pr-2">{faq.q}</h3>
+                <h3 className="font-semibold text-text text-sm sm:text-base pr-2">{faq.q}</h3>
               </summary>
               <div className="faq-answer">
                 <p>{faq.a}</p>

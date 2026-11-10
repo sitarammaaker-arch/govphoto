@@ -1,7 +1,17 @@
 import type { Metadata } from 'next';
 import React from 'react';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import DeferredThirdParty from '@/components/DeferredThirdParty';
+
+// Display face for h1–h3 only (see globals.css). Body text uses the system
+// font, so this is the single font download on the site.
+const displayFont = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['700', '800'],
+  variable: '--font-display',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.signresizer.com'),
@@ -50,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const adsensePublisherId = process.env.NEXT_PUBLIC_ADSENSE_ID;
 
   return (
-    <html lang="en">
+    <html lang="en" className={displayFont.variable}>
       <head>
         {/* gtag stub only — the library itself is loaded after first paint by
             <DeferredThirdParty>; calls queue in dataLayer until then. */}
@@ -64,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className="font-body bg-slate-50 text-slate-800 antialiased">
+      <body className="font-body bg-bg text-text antialiased">
         {children}
         <DeferredThirdParty adsenseId={adsensePublisherId} />
       </body>

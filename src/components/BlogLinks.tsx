@@ -13,11 +13,11 @@ const blogPosts = [
 export default function BlogLinks() {
   return (
     <section className="max-w-4xl mx-auto px-4 py-12">
-      <h2 className="text-2xl font-bold text-slate-800 mb-2 text-center">
+      <h2 className="text-2xl font-bold text-text mb-2 text-center">
         Photo Size Guides
       </h2>
 
-      <p className="text-slate-500 text-center mb-8 text-sm">
+      <p className="text-muted text-center mb-8 text-sm">
         Complete requirements for every major government exam
       </p>
 
@@ -29,15 +29,15 @@ export default function BlogLinks() {
             <a
               key={post.slug}
               href={url}
-              className="flex items-center gap-3 bg-white border border-slate-100 rounded-xl px-4 py-3 hover:border-sky-200 hover:shadow-sm transition-all group"
+              className="flex items-center gap-3 bg-surface border border-border rounded-xl px-4 py-3 hover:border-primary hover:shadow-sm transition-all group"
             >
               <span className="text-xl">{post.icon}</span>
 
-              <span className="text-sm font-semibold text-slate-700 group-hover:text-sky-600 transition-colors leading-snug">
+              <span className="text-sm font-semibold text-text group-hover:text-link transition-colors leading-snug">
                 {post.title}
               </span>
 
-              <span className="ml-auto text-slate-300 group-hover:text-sky-400 transition-colors">
+              <span className="ml-auto text-subtle group-hover:text-primary transition-colors">
                 →
               </span>
             </a>

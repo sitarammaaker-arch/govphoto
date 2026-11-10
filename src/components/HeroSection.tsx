@@ -4,7 +4,7 @@
 export default function HeroSection() {
   return (
     <section
-      className="relative bg-sky-800 text-white overflow-hidden"
+      className="relative bg-surface-inverse text-inverse overflow-hidden"
       /* Explicit min-height prevents CLS if a parent resizes during hydration */
       style={{ minHeight: '420px' }}
     >
@@ -14,7 +14,7 @@ export default function HeroSection() {
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse at 20% 30%, rgba(56,189,248,0.15) 0%, transparent 55%), radial-gradient(ellipse at 80% 70%, rgba(14,165,233,0.1) 0%, transparent 55%)',
+              'radial-gradient(ellipse at 20% 30%, rgba(43,138,230,0.22) 0%, transparent 55%), radial-gradient(ellipse at 80% 70%, rgba(43,138,230,0.14) 0%, transparent 55%)',
           }}
         />
         {/* SVG wave — inlined, no network request */}
@@ -34,7 +34,7 @@ export default function HeroSection() {
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-14 sm:py-20 text-center">
         {/* Status badge — no backdrop-blur, CSS statusPulse instead of animate-pulse */}
-        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-5 text-sky-100">
+        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-5 text-inverse-muted">
           <span className="status-dot" aria-hidden="true" />
           Free Tool — No Registration Required
         </div>
@@ -42,10 +42,10 @@ export default function HeroSection() {
         {/* LCP element — H1. Explicit font-size prevents reflow. */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4">
           Resize Photo &amp; Signature for
-          <span className="block text-sky-300 mt-1">Government Job Forms in Seconds</span>
+          <span className="block text-accent mt-1">Government Job Forms in Seconds</span>
         </h1>
 
-        <p className="text-sky-100 text-lg sm:text-xl mb-7 max-w-2xl mx-auto">
+        <p className="text-inverse-muted text-lg sm:text-xl mb-7 max-w-2xl mx-auto">
           SSC, UPSC, Railway, CET, Police &amp; Banking Exams Supported
         </p>
 
@@ -54,7 +54,7 @@ export default function HeroSection() {
           {['SSC', 'UPSC', 'Railway', 'CET', 'Police', 'Banking', 'IB', 'NTA'].map((exam) => (
             <span
               key={exam}
-              className="bg-white/10 border border-white/15 text-white text-sm px-3 py-1 rounded-full"
+              className="bg-white/10 border border-white/15 text-inverse text-sm px-3 py-1 rounded-full"
             >
               {exam}
             </span>
@@ -64,7 +64,7 @@ export default function HeroSection() {
         {/* CTA — transition-colors only (no layout/paint) */}
         <a
           href="#tool"
-          className="inline-flex items-center gap-3 bg-white text-sky-700 hover:bg-sky-50 font-bold text-lg px-8 py-4 rounded-2xl shadow-lg transition-colors duration-200 active:scale-95"
+          className="inline-flex items-center gap-3 bg-surface text-link hover:bg-primary-soft font-bold text-lg px-8 py-4 rounded-2xl shadow-lg transition-colors duration-200 active:scale-95"
           style={{ willChange: 'transform' }}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -74,7 +74,7 @@ export default function HeroSection() {
         </a>
 
         {/* Trust badges — static, no JS */}
-        <ul className="mt-8 flex flex-wrap justify-center gap-5 text-sky-200 text-sm list-none p-0">
+        <ul className="mt-8 flex flex-wrap justify-center gap-5 text-inverse-muted text-sm list-none p-0">
           {[
             ['✓', '100% Free'],
             ['✓', '100% On-Device'],
@@ -82,7 +82,7 @@ export default function HeroSection() {
             ['✓', 'JPG Output'],
           ].map(([icon, label]) => (
             <li key={label} className="flex items-center gap-1.5">
-              <span className="text-green-400 font-bold">{icon}</span>
+              <span className="text-accent font-bold">{icon}</span>
               {label}
             </li>
           ))}

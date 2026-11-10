@@ -23,7 +23,7 @@ const Footer = dynamic(() => import('@/components/Footer'), {
 });
 
 function SectionSkeleton({ height }: { height: number }) {
-  return <div className="bg-white" style={{ minHeight: height }} aria-hidden="true" />;
+  return <div className="bg-surface" style={{ minHeight: height }} aria-hidden="true" />;
 }
 
 const AD_SLOTS = {
@@ -97,7 +97,7 @@ export default function Home() {
           className="ad-between-sections"
         />
 
-        <section id="tool" className="py-10 sm:py-14 bg-gradient-to-b from-sky-50 to-white">
+        <section id="tool" className="py-10 sm:py-14 bg-gradient-to-b from-primary-soft to-surface">
           <div className="max-w-5xl mx-auto px-4 sm:px-6">
             <ResizerTool postResultAdSlot={AD_SLOTS.postResult} />
           </div>
